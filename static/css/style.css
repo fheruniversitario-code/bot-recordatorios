@@ -48,20 +48,9 @@
     font-family: 'Inter', sans-serif;
 }
 
-/* FIX CRÍTICO: Garantizar que la tipografía de FontAwesome NUNCA sea sobrescrita por Inter */
-i, .fa, .fas, .far, .fab, .fa-solid, .fa-regular, .fa-brands {
-    font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands" !important;
-    font-style: normal !important;
-    font-weight: 900 !important;
-}
-
-.fa-regular {
-    font-weight: 400 !important;
-}
-
 html, body {
-    width: 100%;
-    max-width: 100vw;
+    width: 100% !important;
+    max-width: 100vw !important;
     overflow-x: hidden !important;
 }
 
@@ -72,6 +61,7 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Modo Claro (Light Theme) */
 body.light-theme {
     --bg-main: #f1f5f9;
     --bg-sidebar: #ffffff;
@@ -92,18 +82,37 @@ body.light-theme {
     --shadow-subtle: 0 10px 25px -5px rgba(0, 0, 0, 0.06);
 }
 
-/* Light Mode Overrides */
+/* Estilos de Modo Claro para Encabezado Móvil y Formularios */
+body.light-theme .mobile-nav-bar {
+    background: #ffffff !important;
+    border-bottom: 1px solid #cbd5e1 !important;
+}
+
+body.light-theme .mobile-brand {
+    color: #0f172a !important;
+}
+
+body.light-theme .mobile-brand .brand-highlight {
+    color: #0284c7 !important;
+}
+
+body.light-theme #btn-mobile-menu {
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #0f172a !important;
+}
+
 body.light-theme .sidebar {
-    background-color: #ffffff;
-    border-right-color: #e2e8f0;
+    background-color: #ffffff !important;
+    border-right-color: #e2e8f0 !important;
 }
 
 body.light-theme .glass-card,
 body.light-theme .task-card,
 body.light-theme .modal-box {
-    background: #ffffff;
-    border-color: #e2e8f0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    background: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
 }
 
 body.light-theme .header-search input,
@@ -122,48 +131,47 @@ body.light-theme .task-meta,
 body.light-theme .unidades-checkboxes-grid,
 body.light-theme .custom-list li,
 body.light-theme .unit-metrics-row {
-    background: #f8fafc;
-    border-color: #e2e8f0;
-    color: #0f172a;
+    background: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+    color: #0f172a !important;
 }
 
 body.light-theme .scope-tab {
-    background: #ffffff;
-    border: 1px solid #cbd5e1;
-    color: #475569;
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #475569 !important;
 }
 
 body.light-theme .scope-tab.active {
-    background: rgba(2, 132, 199, 0.12);
-    border-color: #0284c7;
-    color: #0284c7;
+    background: rgba(2, 132, 199, 0.12) !important;
+    border-color: #0284c7 !important;
+    color: #0284c7 !important;
 }
 
 body.light-theme .pill {
-    background: #e2e8f0;
-    color: #334155;
+    background: #e2e8f0 !important;
+    color: #334155 !important;
 }
 
 body.light-theme .pill.active {
-    background: #0284c7;
-    color: #ffffff;
-}
-
-body.light-theme .radio-pill span {
-    background: #f8fafc;
-    border-color: #cbd5e1;
-    color: #475569;
-}
-
-body.light-theme .radio-pill input:checked + span {
-    background: rgba(2, 132, 199, 0.12);
-    border-color: #0284c7;
-    color: #0284c7;
+    background: #0284c7 !important;
+    color: #ffffff !important;
 }
 
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Outfit', sans-serif;
     font-weight: 600;
+}
+
+/* Icons styling */
+.icon-sym {
+    font-size: 16px;
+    display: inline-block;
+}
+
+.nav-icon-sym {
+    font-size: 18px;
+    display: inline-block;
 }
 
 /* Glassmorphism Common Card */
@@ -256,12 +264,6 @@ h1, h2, h3, h4, h5, h6 {
     transition: var(--transition);
     text-align: left;
     width: 100%;
-
-    i {
-        font-size: 16px;
-        width: 20px;
-        text-align: center;
-    }
 
     &:hover {
         background-color: rgba(255, 255, 255, 0.05);
@@ -445,7 +447,7 @@ h1, h2, h3, h4, h5, h6 {
     &:hover { background: rgba(239, 68, 68, 0.3); }
 }
 
-/* Scope Tabs (Unidades vs Personal) */
+/* Scope Tabs */
 .scope-tabs {
     display: flex;
     gap: 10px;
@@ -804,6 +806,7 @@ h1, h2, h3, h4, h5, h6 {
 .table-responsive {
     overflow-x: auto;
     width: 100%;
+    -webkit-overflow-scrolling: touch;
 }
 
 .data-table {
@@ -815,6 +818,7 @@ h1, h2, h3, h4, h5, h6 {
         text-align: left;
         border-bottom: 1px solid var(--border-glass);
         font-size: 13px;
+        white-space: nowrap;
     }
 
     th {
@@ -837,6 +841,7 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    width: 100%;
 
     li {
         display: flex;
@@ -865,6 +870,7 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     gap: 10px;
     margin-top: 12px;
+    width: 100%;
 
     input {
         flex: 1;
@@ -892,7 +898,7 @@ h1, h2, h3, h4, h5, h6 {
     display: none;
     align-items: center;
     justify-content: center;
-    z-index: 2000;
+    z-index: 4000;
     padding: 12px;
 
     &.active {
@@ -1099,7 +1105,7 @@ h1, h2, h3, h4, h5, h6 {
     color: #fff;
     font-size: 14px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-    z-index: 3000;
+    z-index: 5000;
     display: none;
     animation: slideUp 0.3s ease;
 
@@ -1137,15 +1143,16 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
     justify-content: center;
     gap: 6px;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
-    color: var(--text-main);
+    color: #f8fafc;
     flex: 1;
     text-align: center;
     white-space: nowrap;
 
-    i { color: var(--accent); }
-    b { color: var(--accent); }
+    .brand-emoji { font-size: 18px; }
+    .brand-name { color: var(--text-main); }
+    .brand-highlight { color: var(--accent); }
 }
 
 #btn-mobile-menu {
@@ -1212,8 +1219,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 body.light-theme .mobile-bottom-bar {
-    background: rgba(255, 255, 255, 0.95);
-    border-top-color: #cbd5e1;
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-top-color: #cbd5e1 !important;
 }
 
 .bottom-item {
@@ -1230,10 +1237,6 @@ body.light-theme .mobile-bottom-bar {
     cursor: pointer;
     flex: 1;
     transition: var(--transition);
-
-    i {
-        font-size: 18px;
-    }
 
     &.active {
         color: var(--accent);
@@ -1255,10 +1258,6 @@ body.light-theme .mobile-bottom-bar {
     transform: translateY(-12px);
     flex: 0 0 50px;
 
-    i {
-        font-size: 22px;
-    }
-
     &:active {
         transform: translateY(-10px) scale(0.95);
     }
@@ -1277,17 +1276,18 @@ body.light-theme .mobile-bottom-bar {
     .mobile-nav-bar { display: flex !important; }
     .mobile-bottom-bar { display: flex !important; }
 
-    /* Ocultar menú lateral por completo en móviles */
+    /* Menú lateral que se abre DESDE ABAJO del encabezado (top: 56px) */
     .sidebar {
         display: none !important;
         position: fixed !important;
-        top: 0 !important;
+        top: 56px !important;
         left: -320px !important;
         width: 280px !important;
-        height: 100vh !important;
+        height: calc(100vh - 56px) !important;
         z-index: 2500 !important;
         box-shadow: 10px 0 30px rgba(0,0,0,0.5) !important;
         background: var(--bg-sidebar) !important;
+        padding-top: 16px !important;
     }
 
     .sidebar.mobile-open {

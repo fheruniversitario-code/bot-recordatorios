@@ -2,20 +2,20 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- PWA & Mobile Meta Tags -->
     <meta name="theme-color" content="#0284c7">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
     
-    <title>Gestor de Recordatorios | Unidades de Salud & Personales</title>
+    <title>SaludRemind | Gestor de Recordatorios</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons (con fallback y crossorigin) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- FontAwesome Icons (con fallback de librerías) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -24,36 +24,36 @@
     <!-- Mobile Header Bar -->
     <div class="mobile-nav-bar">
         <button class="btn-icon" onclick="toggleMobileSidebar()" id="btn-mobile-menu" title="Menú">
-            <i class="fa-solid fa-bars"></i>
+            <span class="icon-sym">☰</span>
         </button>
         <div class="mobile-brand">
-            <i class="fa-solid fa-hospital-user"></i>
-            <span>Salud<b>Remind</b></span>
+            <span class="brand-emoji">🏥</span>
+            <span class="brand-name">Salud<b class="brand-highlight">Remind</b></span>
         </div>
         <button class="btn-primary btn-sm" onclick="abrirModalNuevaTarea()">
-            <i class="fa-solid fa-plus"></i> Nueva
+            <span class="icon-sym">➕</span> Nueva
         </button>
     </div>
 
     <!-- Mobile Bottom Navigation Bar (Estilo App Nativa) -->
     <div class="mobile-bottom-bar">
         <button class="bottom-item active" onclick="clickBottomNav('sec-checklist', this)">
-            <i class="fa-solid fa-list-check"></i>
+            <span class="nav-icon-sym">📋</span>
             <span>Pendientes</span>
         </button>
         <button class="bottom-item" onclick="clickBottomNav('sec-dashboard', this)">
-            <i class="fa-solid fa-chart-pie"></i>
+            <span class="nav-icon-sym">📊</span>
             <span>Métricas</span>
         </button>
         <button class="bottom-item bottom-fab" onclick="abrirModalNuevaTarea()" title="Crear Nueva Tarea">
-            <i class="fa-solid fa-plus"></i>
+            <span>➕</span>
         </button>
         <button class="bottom-item" onclick="clickBottomNav('sec-historial', this)">
-            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span class="nav-icon-sym">📜</span>
             <span>Historial</span>
         </button>
         <button class="bottom-item" onclick="clickBottomNav('sec-config', this)">
-            <i class="fa-solid fa-gear"></i>
+            <span class="nav-icon-sym">⚙️</span>
             <span>Ajustes</span>
         </button>
     </div>
@@ -64,67 +64,67 @@
     <div class="app-layout">
         <!-- Sidebar Navigation -->
         <aside class="sidebar" id="app-sidebar">
-            <button class="btn-close-sidebar" onclick="cerrarMobileSidebar()"><i class="fa-solid fa-xmark"></i></button>
+            <button class="btn-close-sidebar" onclick="cerrarMobileSidebar()">✖</button>
             <div class="brand">
                 <div class="brand-icon">
-                    <i class="fa-solid fa-hospital-user"></i>
+                    <span>🏥</span>
                 </div>
                 <div class="brand-text">
-                    <h2>Salud <span>Remind</span></h2>
+                    <h2>Salud<span>Remind</span></h2>
                     <p>Gestor CAISES & Personal</p>
                 </div>
             </div>
 
             <nav class="nav-menu">
-                <button class="nav-item active" data-target="sec-checklist" id="nav-checklist">
-                    <i class="fa-solid fa-list-check"></i>
+                <button class="nav-item active" data-target="sec-checklist">
+                    <span class="icon-sym">📋</span>
                     <span>Checklist Pendientes</span>
                 </button>
-                <button class="nav-item" data-target="sec-dashboard" id="nav-dashboard">
-                    <i class="fa-solid fa-chart-pie"></i>
+                <button class="nav-item" data-target="sec-dashboard">
+                    <span class="icon-sym">📊</span>
                     <span>Dashboard & Métricas</span>
                 </button>
-                <button class="nav-item" data-target="sec-historial" id="nav-historial">
-                    <i class="fa-solid fa-clock-rotate-left"></i>
+                <button class="nav-item" data-target="sec-historial">
+                    <span class="icon-sym">📜</span>
                     <span>Historial Cumplido</span>
                 </button>
-                <button class="nav-item" data-target="sec-unidades" id="nav-unidades">
-                    <i class="fa-solid fa-building-user"></i>
+                <button class="nav-item" data-target="sec-unidades">
+                    <span class="icon-sym">🏥</span>
                     <span>Unidades & Categorías</span>
                 </button>
-                <button class="nav-item" data-target="sec-config" id="nav-config">
-                    <i class="fa-solid fa-sliders"></i>
+                <button class="nav-item" data-target="sec-config">
+                    <span class="icon-sym">⚙️</span>
                     <span>Bot Telegram & Ajustes</span>
                 </button>
             </nav>
 
             <div class="sidebar-footer">
                 <button class="btn-create-primary" onclick="abrirModalNuevaTarea()">
-                    <i class="fa-solid fa-plus"></i> Nueva Tarea en Lote
+                    <span>➕</span> Nueva Tarea en Lote
                 </button>
             </div>
         </aside>
 
         <!-- Main Content Area -->
         <main class="main-content">
-            <!-- Header Bar -->
+            <!-- Top Search & Quick Actions -->
             <header class="top-header">
                 <div class="header-search">
-                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <span class="search-icon">🔍</span>
                     <input type="text" id="input-search" placeholder="Buscar pendiente, unidad o descripción..." onkeyup="filtrarTareasLocal()">
                 </div>
                 <div class="header-actions">
                     <button class="btn-icon" id="btn-theme-toggle" title="Cambiar Tema (Claro / Oscuro)" onclick="toggleTema()">
-                        <i class="fa-solid fa-sun" id="icon-theme"></i> <span id="text-theme">Tema</span>
+                        <span id="icon-theme">🌙</span> <span id="text-theme">Tema</span>
                     </button>
                     <button class="btn-icon" title="Descargar Respaldo JSON de Datos" onclick="window.open('/api/respaldo/json', '_blank')">
-                        <i class="fa-solid fa-database"></i> Respaldo
+                        <span>💾</span> Respaldo
                     </button>
                     <button class="btn-icon" title="Descargar Reporte PDF" onclick="descargarPDF()">
-                        <i class="fa-solid fa-file-pdf"></i> PDF
+                        <span>📄</span> PDF
                     </button>
                     <button class="btn-icon" title="Actualizar Datos" onclick="cargarTodo()">
-                        <i class="fa-solid fa-rotate-right"></i>
+                        <span>🔄</span>
                     </button>
                 </div>
             </header>
@@ -137,45 +137,46 @@
                         <p>Supervisa tus actividades recurrentes (Mensual, Trimestral, Quincenal, etc.) en tiempo y forma.</p>
                     </div>
                     <button class="btn-action btn-primary" onclick="abrirModalNuevaTarea()">
-                        <i class="fa-solid fa-layer-group"></i> Crear en Múltiples Unidades
+                        <span>📑</span> Crear en Múltiples Unidades
                     </button>
                 </div>
 
-                <!-- Scope Toggle: Unidades de Salud vs Personales -->
+                <!-- Ámbito Filter (Unidades vs Personal) -->
                 <div class="scope-tabs">
-                    <button class="scope-tab active" data-tipo="todas" onclick="cambiarFiltroTipo(this, 'todas')">
-                        <i class="fa-solid fa-globe"></i> Todos los Ámbitos
+                    <button class="scope-tab active" onclick="cambiarFiltroTipo(this, 'todas')">
+                        <span>🌐</span> Todos los Ámbitos
                     </button>
-                    <button class="scope-tab" data-tipo="unidad" onclick="cambiarFiltroTipo(this, 'unidad')">
-                        <i class="fa-solid fa-hospital-clinic"></i> Unidades de Salud
+                    <button class="scope-tab" onclick="cambiarFiltroTipo(this, 'unidad')">
+                        <span>🏥</span> Unidades de Salud
                     </button>
-                    <button class="scope-tab" data-tipo="personal" onclick="cambiarFiltroTipo(this, 'personal')">
-                        <i class="fa-solid fa-user-gear"></i> Personales / Generales
+                    <button class="scope-tab" onclick="cambiarFiltroTipo(this, 'personal')">
+                        <span>👤</span> Personales / General
                     </button>
                 </div>
 
-                <!-- Filter Controls -->
+                <!-- Filters & Controls Bar -->
                 <div class="filter-bar glass-card">
                     <div class="filter-group">
-                        <label><i class="fa-solid fa-filter"></i> Estado:</label>
+                        <label><span>🔻</span> Estado:</label>
                         <div class="pill-filters" id="pills-estado">
                             <button class="pill active" onclick="cambiarFiltroEstado(this, 'activas')">Activas</button>
-                            <button class="pill pill-danger" onclick="cambiarFiltroEstado(this, 'vencida')">🚨 Vencidas</button>
-                            <button class="pill pill-warning" onclick="cambiarFiltroEstado(this, 'por_vencer')">⚡ Por Vencer</button>
-                            <button class="pill pill-success" onclick="cambiarFiltroEstado(this, 'pendiente')">🌱 En Tiempo</button>
-                            <button class="pill" onclick="cambiarFiltroEstado(this, 'completadas')">✅ Completadas</button>
+                            <button class="pill" onclick="cambiarFiltroEstado(this, 'vencida')">🚨 Vencidas</button>
+                            <button class="pill" onclick="cambiarFiltroEstado(this, 'por_vencer')">⚡ Por Vencer</button>
+                            <button class="pill" onclick="cambiarFiltroEstado(this, 'pendiente')">🌱 En Tiempo</button>
+                            <button class="pill" onclick="cambiarFiltroEstado(this, 'completada')">✅ Completadas</button>
                         </div>
                     </div>
 
                     <div class="filter-inline-selects">
                         <div class="select-wrapper">
-                            <label><i class="fa-solid fa-building"></i> Unidad:</label>
+                            <label><span>🏥</span> Unidad:</label>
                             <select id="select-filtro-unidad" onchange="cargarTareas()">
                                 <option value="Todas">Todas las Unidades</option>
                             </select>
                         </div>
+
                         <div class="select-wrapper">
-                            <label><i class="fa-solid fa-repeat"></i> Frecuencia:</label>
+                            <label><span>🔄</span> Frecuencia:</label>
                             <select id="select-filtro-frecuencia" onchange="cargarTareas()">
                                 <option value="Todas">Todas las Frecuencias</option>
                             </select>
@@ -183,48 +184,49 @@
                     </div>
                 </div>
 
-                <!-- Tasks Cards Grid -->
+                <!-- Tareas Grid Container -->
                 <div class="tasks-grid" id="tasks-container">
-                    <div class="loading-state">
-                        <i class="fa-solid fa-circle-notch fa-spin"></i>
-                        <p>Cargando pendientes...</p>
-                    </div>
+                    <!-- Dinámico vía JS -->
                 </div>
             </section>
 
-            <!-- SECTION 2: DASHBOARD & METRICS -->
+            <!-- SECTION 2: DASHBOARD & METRICAS -->
             <section id="sec-dashboard" class="app-section">
                 <div class="section-header">
                     <div>
                         <h1>Dashboard & Métricas</h1>
-                        <p>Estado global del cumplimiento de actividades y alertas preventivas.</p>
+                        <p>Resumen general del cumplimiento de compromisos por unidades de salud.</p>
                     </div>
                 </div>
 
+                <!-- Metrics Grid -->
                 <div class="metrics-grid">
                     <div class="stat-card glass-card">
-                        <div class="stat-icon icon-blue"><i class="fa-solid fa-list-check"></i></div>
+                        <div class="stat-icon icon-blue">📋</div>
                         <div class="stat-info">
                             <h3 id="stat-total-activas">0</h3>
-                            <p>Tareas Activas</p>
+                            <p>Tareas Activas Totales</p>
                         </div>
                     </div>
+
                     <div class="stat-card glass-card">
-                        <div class="stat-icon icon-red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div class="stat-icon icon-red">🚨</div>
                         <div class="stat-info">
                             <h3 id="stat-vencidas">0</h3>
-                            <p>Vencidas (Acción Inmediata)</p>
+                            <p>Tareas Vencidas</p>
                         </div>
                     </div>
+
                     <div class="stat-card glass-card">
-                        <div class="stat-icon icon-orange"><i class="fa-solid fa-bell"></i></div>
+                        <div class="stat-icon icon-orange">⚡</div>
                         <div class="stat-info">
                             <h3 id="stat-por-vencer">0</h3>
-                            <p>En Periodo de Aviso</p>
+                            <p>Avisos Activos</p>
                         </div>
                     </div>
+
                     <div class="stat-card glass-card">
-                        <div class="stat-icon icon-green"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="stat-icon icon-green">✅</div>
                         <div class="stat-info">
                             <h3 id="stat-cumplidas">0</h3>
                             <p>Cumplidas en Historial</p>
@@ -232,34 +234,33 @@
                     </div>
                 </div>
 
-                <div class="dashboard-details grid-2col">
-                    <div class="glass-card detail-box">
-                        <h3><i class="fa-solid fa-chart-column"></i> Estado por Unidad de Salud</h3>
-                        <div class="unit-breakdown" id="unit-breakdown-container">
-                            <!-- Injected JS -->
+                <!-- Breakdown by Unit -->
+                <div class="grid-2col">
+                    <div class="glass-card">
+                        <h3>📊 Estado por Unidad de Salud</h3>
+                        <div id="unit-breakdown-container" style="margin-top: 16px;">
+                            <!-- JS populate -->
                         </div>
                     </div>
 
-                    <div class="glass-card detail-box">
-                        <h3><i class="fa-solid fa-lightbulb"></i> Resumen de Recurrencias</h3>
-                        <ul class="info-list">
-                            <li><i class="fa-solid fa-circle-info"></i> Las tareas **Mensuales, Trimestrales, Bimensuales, etc.** se reprograman automáticamente al marcarlas como realizadas.</li>
-                            <li><i class="fa-solid fa-circle-info"></i> Puedes configurar **horario específico** y elegir recibir de 1 a 3 recordatorios diarios en Telegram por tarea.</li>
-                            <li><i class="fa-solid fa-circle-info"></i> Si ya no realizarás una tarea recurrente, usa la opción <b>"🛑 Finalizar Serie"</b> para cancelarla definitivamente.</li>
-                        </ul>
+                    <div class="glass-card">
+                        <h3>📋 Resumen de Recurrencias</h3>
+                        <p style="color: var(--text-muted); margin-top: 8px; font-size: 13px;">
+                            Las tareas configuradas como mensuales, bimensuales, trimestrales, etc., se reprograman automáticamente al ser marcadas como cumplidas.
+                        </p>
                     </div>
                 </div>
             </section>
 
-            <!-- SECTION 3: HISTORIAL -->
+            <!-- SECTION 3: HISTORIAL CUMPLIDO -->
             <section id="sec-historial" class="app-section">
                 <div class="section-header">
                     <div>
                         <h1>Historial de Cumplimiento</h1>
-                        <p>Registro completo de actividades finalizadas para auditoría y expediente.</p>
+                        <p>Bitácora permanente de actividades entregadas con fecha y observaciones.</p>
                     </div>
                     <button class="btn-action btn-danger" onclick="limpiarHistorial()">
-                        <i class="fa-solid fa-trash-can"></i> Limpiar Historial
+                        <span>🗑️</span> Vaciar Historial
                     </button>
                 </div>
 
@@ -267,111 +268,130 @@
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>Fecha Cumplido</th>
+                                <th>Fecha Cumplimiento</th>
                                 <th>Tarea</th>
-                                <th>Unidad / Ámbito</th>
+                                <th>Unidad / Destino</th>
                                 <th>Categoría</th>
                                 <th>Frecuencia</th>
-                                <th>Fecha y Hora Límite Original</th>
+                                <th>Fecha Límite Original</th>
                                 <th>Notas</th>
                             </tr>
                         </thead>
                         <tbody id="tbl-historial-body">
-                            <!-- Injected via JS -->
+                            <!-- JS populate -->
                         </tbody>
                     </table>
                 </div>
             </section>
 
-            <!-- SECTION 4: UNIDADES & CATEGORÍAS -->
+            <!-- SECTION 4: GESTION DE UNIDADES Y CATEGORIAS -->
             <section id="sec-unidades" class="app-section">
                 <div class="section-header">
                     <div>
-                        <h1>Gestión de Unidades de Salud & Categorías</h1>
-                        <p>Tú controlas y alimentas libremente este listado con las unidades a tu cargo y tus etiquetas personalizadas.</p>
+                        <h1>Unidades de Salud & Categorías</h1>
+                        <p>Personaliza tu catálogo de centros de salud y tipos de actividades.</p>
                     </div>
                 </div>
 
                 <div class="grid-2col">
-                    <!-- Unidades -->
+                    <!-- Unidades Admin -->
                     <div class="glass-card">
-                        <h3><i class="fa-solid fa-hospital"></i> Unidades de Salud</h3>
+                        <h3>🏥 Catálogo de Unidades de Salud</h3>
+                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Agrega o elimina las unidades bajo tu gestión.</p>
+
                         <div class="add-inline-form">
-                            <input type="text" id="input-nueva-unidad" placeholder="Nombre de la unidad (ej. UMAPS La Calera)">
-                            <button class="btn-primary" onclick="agregarUnidad()"><i class="fa-solid fa-plus"></i> Agregar</button>
+                            <input type="text" id="input-nueva-unidad" placeholder="Nombre (Ej. UMAPS Puentecillas)...">
+                            <button class="btn-action btn-primary" onclick="agregarUnidad()">Agregar</button>
                         </div>
+
                         <ul class="custom-list" id="list-unidades">
-                            <!-- JS -->
+                            <!-- JS populate -->
                         </ul>
                     </div>
 
-                    <!-- Categorías -->
+                    <!-- Categorías Admin -->
                     <div class="glass-card">
-                        <h3><i class="fa-solid fa-tags"></i> Categorías de Pendientes</h3>
+                        <h3>🏷️ Catálogo de Categorías</h3>
+                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Clasifica tus tareas (Reportes, Medicamentos, Nómina, etc.).</p>
+
                         <div class="add-inline-form">
-                            <input type="text" id="input-nueva-categoria" placeholder="Nombre de categoría (ej. Cadena de Frío)">
-                            <button class="btn-primary" onclick="agregarCategoria()"><i class="fa-solid fa-plus"></i> Agregar</button>
+                            <input type="text" id="input-nueva-categoria" placeholder="Categoría (Ej. Almacén)...">
+                            <button class="btn-action btn-primary" onclick="agregarCategoria()">Agregar</button>
                         </div>
+
                         <ul class="custom-list" id="list-categorias">
-                            <!-- JS -->
+                            <!-- JS populate -->
                         </ul>
                     </div>
                 </div>
             </section>
 
-            <!-- SECTION 5: CONFIGURACIÓN & TELEGRAM -->
+            <!-- SECTION 5: BOT TELEGRAM & CONFIGURACION -->
             <section id="sec-config" class="app-section">
                 <div class="section-header">
                     <div>
-                        <h1>Configuración del Bot de Telegram</h1>
-                        <p>Vincula tu Bot de Telegram para recibir avisos automáticos diarios e interactuar con tus tareas.</p>
+                        <h1>Bot de Telegram & Ajustes</h1>
+                        <p>Configura tu asistente virtual en Telegram para recibir recordatorios automáticos.</p>
                     </div>
                 </div>
 
-                <div class="glass-card form-container">
-                    <form id="form-config" onsubmit="guardarConfiguracion(event)">
-                        <div class="form-group">
-                            <label><i class="fa-brands fa-telegram"></i> Telegram Token del Bot:</label>
-                            <input type="text" id="cfg-token" placeholder="Ej: 123456789:ABCdefGhIJKlmNoPQRstUVwxyZ">
-                            <small>Consíguelo creando un bot con @BotFather en Telegram.</small>
-                        </div>
+                <div class="grid-2col">
+                    <div class="glass-card">
+                        <h3>🤖 Vinculación del Bot de Telegram</h3>
+                        <form id="form-config" onsubmit="guardarConfiguracion(event)">
+                            <div class="form-group" style="margin-top: 16px;">
+                                <label>HTTP API Token del Bot (@BotFather):</label>
+                                <input type="text" id="cfg-token" placeholder="Ej. 123456789:ABCdefGhIJKlmNoPQRstUVwxyZ">
+                            </div>
 
-                        <div class="form-group">
-                            <label><i class="fa-solid fa-id-badge"></i> Tu Telegram Chat ID:</label>
-                            <input type="text" id="cfg-chat-id" placeholder="Ej: 987654321">
-                            <small>Para saber tu Chat ID, escribe al bot @userinfobot o envía un mensaje a tu propio bot.</small>
-                        </div>
+                            <div class="form-group">
+                                <label>Tu Chat ID Personal (@userinfobot):</label>
+                                <input type="text" id="cfg-chat-id" placeholder="Ej. 987654321">
+                            </div>
 
-                        <div class="form-group">
-                            <label><i class="fa-solid fa-clock"></i> Hora de Envió del Resumen Diario Principal:</label>
-                            <input type="time" id="cfg-hora" value="08:00">
-                        </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Hora de Notificación Diaria:</label>
+                                    <input type="time" id="cfg-hora" value="08:00">
+                                </div>
+                                <div class="form-group">
+                                    <label>Días de Aviso por Defecto:</label>
+                                    <input type="number" id="cfg-dias" value="5" min="1" max="30">
+                                </div>
+                            </div>
 
-                        <div class="form-group">
-                            <label><i class="fa-solid fa-calendar-day"></i> Días de aviso predeterminados antes de entrega:</label>
-                            <input type="number" id="cfg-dias" min="1" max="60" value="5">
-                        </div>
+                            <button type="submit" class="btn-action btn-primary" style="margin-top: 12px;">
+                                💾 Guardar Configuración
+                            </button>
+                        </form>
+                    </div>
 
-                        <button type="submit" class="btn-primary btn-large">
-                            <i class="fa-solid fa-floppy-disk"></i> Guardar Configuración
-                        </button>
-                    </form>
+                    <div class="glass-card">
+                        <h3>📱 Guía Rápida de Comandos en Telegram</h3>
+                        <div style="margin-top: 16px; font-size: 13px; color: var(--text-muted); display: flex; flex-direction: column; gap: 10px;">
+                            <p><b>/start</b> - Inicia la comunicación y verifica el estado del bot.</p>
+                            <p><b>/pendientes</b> - Consulta la lista interactiva de tareas por vencer.</p>
+                            <p><b>/nueva</b> - Asistente interactivo paso a paso para crear un recordatorio.</p>
+                            <p><b>/resumen</b> - Muestra el estado de cumplimiento por unidades.</p>
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>
     </div>
 
-    <!-- MODAL: NUEVA TAREA / EN LOTE -->
+    <!-- MODAL 1: NUEVA TAREA (LOTE O INDIVIDUAL) -->
     <div class="modal-backdrop" id="modal-tarea">
-        <div class="modal-box glass-card">
+        <div class="modal-box">
             <div class="modal-header">
-                <h2><i class="fa-solid fa-calendar-plus"></i> Registrar Pendiente (Lote o Individual)</h2>
-                <button class="btn-close" onclick="cerrarModalTarea()"><i class="fa-solid fa-xmark"></i></button>
+                <h2>➕ Registrar Pendiente (Lote o Individual)</h2>
+                <button class="btn-close" onclick="cerrarModalTarea()">✖</button>
             </div>
+
             <form id="form-nueva-tarea" onsubmit="guardarNuevaTarea(event)">
                 <div class="form-group">
                     <label>Título de la Tarea / Actividad *</label>
-                    <input type="text" id="t-titulo" required placeholder="Ej. Informe Mensual de Salud Materna / Limpieza Cadena de Frío">
+                    <input type="text" id="t-titulo" placeholder="Ej. Informe Mensual de Salud Materna" required>
                 </div>
 
                 <div class="form-group">
@@ -379,39 +399,40 @@
                     <textarea id="t-descripcion" rows="2" placeholder="Detalles de lo que se debe revisar o anexos a entregar..."></textarea>
                 </div>
 
-                <div class="form-row grid-2col">
+                <div class="form-row">
                     <div class="form-group">
                         <label>Tipo de Ámbito *</label>
                         <div class="radio-group-pills">
                             <label class="radio-pill">
                                 <input type="radio" name="tipo_destino" value="unidad" checked onchange="toggleDestinoMode()">
-                                <span><i class="fa-solid fa-hospital"></i> Unidades de Salud</span>
+                                <span>🏥 Unidades de Salud</span>
                             </label>
                             <label class="radio-pill">
                                 <input type="radio" name="tipo_destino" value="personal" onchange="toggleDestinoMode()">
-                                <span><i class="fa-solid fa-user"></i> Personal / General</span>
+                                <span>👤 Personal / General</span>
                             </label>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label>Categoría</label>
-                        <select id="t-categoria"></select>
+                        <label>Categoría *</label>
+                        <select id="t-categoria" required></select>
                     </div>
                 </div>
 
-                <!-- Unidades Selector (Lote) -->
+                <!-- Selección de Múltiples Unidades (Lote) -->
                 <div class="form-group" id="box-unidades-lote">
                     <div class="label-with-action">
-                        <label>Seleccionar Unidad(es) de Salud (Crea tareas en lote) *</label>
-                        <button type="button" class="btn-text-action" onclick="toggleSelectAllUnidades()">Seleccionar Todas</button>
+                        <label>Selecciona las Unidades de Salud donde aplica *</label>
+                        <button type="button" class="btn-text-action" onclick="toggleSelectAllUnidades()">Seleccionar Todas / Ninguna</button>
                     </div>
                     <div class="unidades-checkboxes-grid" id="container-unidades-checkboxes">
-                        <!-- JS injected -->
+                        <!-- JS Checkboxes -->
                     </div>
+                    <small>Se creará un recordatorio independiente para cada unidad seleccionada con la misma fecha.</small>
                 </div>
 
-                <div class="form-row grid-3col">
+                <div class="form-row">
                     <div class="form-group">
                         <label>Frecuencia / Recurrencia *</label>
                         <select id="t-frecuencia" required></select>
@@ -423,22 +444,22 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Hora Límite / Cumplimiento *</label>
+                        <label>Hora Límite de Cumplimiento *</label>
                         <input type="time" id="t-hora-entrega" value="09:00" required>
                     </div>
                 </div>
 
-                <div class="form-row grid-2col">
+                <div class="form-row">
                     <div class="form-group">
                         <label>¿Cuántos días antes comenzar avisos? *</label>
-                        <input type="number" id="t-dias-aviso" min="1" max="60" value="5" required>
+                        <input type="number" id="t-dias-aviso" value="5" min="1" max="60" required>
                     </div>
 
                     <div class="form-group">
                         <label>Recordatorios por día en Telegram *</label>
                         <select id="t-recordatorios-dia" required>
                             <option value="1">1 vez al día (08:00 AM)</option>
-                            <option value="2">2 veces al día (08:00 AM y 03:00 PM)</option>
+                            <option value="2">2 veces al día (08:00 AM y 01:00 PM)</option>
                             <option value="3">3 veces al día (08:00 AM, 01:00 PM y 07:00 PM)</option>
                         </select>
                     </div>
@@ -446,64 +467,63 @@
 
                 <div class="form-group">
                     <label>Canales de Recordatorio</label>
-                    <div class="checkbox-group">
-                        <label class="custom-checkbox">
-                            <input type="checkbox" id="chk-rec-telegram" checked>
-                            <span><i class="fa-brands fa-telegram"></i> Mensaje en Telegram</span>
+                    <div style="display: flex; gap: 16px; margin-top: 6px;">
+                        <label style="display: flex; align-items: center; gap: 6px; font-weight: normal; cursor: pointer;">
+                            <input type="checkbox" id="chk-rec-telegram" checked> Mensaje en Telegram
                         </label>
-                        <label class="custom-checkbox">
-                            <input type="checkbox" id="chk-rec-visual" checked>
-                            <span><i class="fa-solid fa-desktop"></i> Alerta Visual en App</span>
+                        <label style="display: flex; align-items: center; gap: 6px; font-weight: normal; cursor: pointer;">
+                            <input type="checkbox" id="chk-rec-visual" checked> Alerta Visual en Web
                         </label>
                     </div>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn-secondary" onclick="cerrarModalTarea()">Cancelar</button>
-                    <button type="submit" class="btn-primary"><i class="fa-solid fa-check"></i> Guardar Tareas</button>
+                    <button type="submit" class="btn-action btn-primary">➕ Registrar Pendiente(s)</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- MODAL: EDITAR TAREA -->
+    <!-- MODAL 2: EDITAR TAREA -->
     <div class="modal-backdrop" id="modal-editar">
-        <div class="modal-box glass-card">
+        <div class="modal-box">
             <div class="modal-header">
-                <h2><i class="fa-solid fa-pen-to-square"></i> Editar Pendiente</h2>
-                <button class="btn-close" onclick="cerrarModalEditar()"><i class="fa-solid fa-xmark"></i></button>
+                <h2>✏️ Editar Recordatorio</h2>
+                <button class="btn-close" onclick="cerrarModalEditar()">✖</button>
             </div>
+
             <form id="form-editar-tarea" onsubmit="guardarEdicionTarea(event)">
                 <input type="hidden" id="edit-id">
-                
+
                 <div class="form-group">
                     <label>Título de la Tarea</label>
                     <input type="text" id="edit-titulo" required>
                 </div>
 
                 <div class="form-group">
-                    <label>Descripción</label>
+                    <label>Descripción / Observaciones</label>
                     <textarea id="edit-descripcion" rows="2"></textarea>
                 </div>
 
-                <div class="form-row grid-2col">
+                <div class="form-row">
                     <div class="form-group">
-                        <label>Unidad / Ámbito</label>
-                        <select id="edit-unidad"></select>
+                        <label>Unidad / Destino</label>
+                        <select id="edit-unidad" required></select>
                     </div>
                     <div class="form-group">
                         <label>Categoría</label>
-                        <select id="edit-categoria"></select>
+                        <select id="edit-categoria" required></select>
                     </div>
                 </div>
 
-                <div class="form-row grid-3col">
+                <div class="form-row">
                     <div class="form-group">
-                        <label>Frecuencia</label>
-                        <select id="edit-frecuencia"></select>
+                        <label>Frecuencia / Recurrencia</label>
+                        <select id="edit-frecuencia" required></select>
                     </div>
                     <div class="form-group">
-                        <label>Fecha Límite</label>
+                        <label>Fecha Límite de Entrega</label>
                         <input type="date" id="edit-fecha-entrega" required>
                     </div>
                     <div class="form-group">
@@ -512,16 +532,16 @@
                     </div>
                 </div>
 
-                <div class="form-row grid-2col">
+                <div class="form-row">
                     <div class="form-group">
-                        <label>Días de aviso previo</label>
+                        <label>Días de Aviso Previo</label>
                         <input type="number" id="edit-dias-aviso" min="1" max="60" required>
                     </div>
                     <div class="form-group">
-                        <label>Recordatorios por día</label>
-                        <select id="edit-recordatorios-dia">
+                        <label>Recordatorios por Día</label>
+                        <select id="edit-recordatorios-dia" required>
                             <option value="1">1 vez al día (08:00 AM)</option>
-                            <option value="2">2 veces al día (08:00 AM y 03:00 PM)</option>
+                            <option value="2">2 veces al día (08:00 AM y 01:00 PM)</option>
                             <option value="3">3 veces al día (08:00 AM, 01:00 PM y 07:00 PM)</option>
                         </select>
                     </div>
@@ -529,16 +549,16 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn-secondary" onclick="cerrarModalEditar()">Cancelar</button>
-                    <button type="submit" class="btn-primary"><i class="fa-solid fa-floppy-disk"></i> Actualizar</button>
+                    <button type="submit" class="btn-action btn-primary">💾 Guardar Cambios</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Notifications Toast -->
+    <!-- Toast Notification Box -->
     <div id="toast" class="toast"></div>
 
-    <!-- JS Scripts -->
+    <!-- JS Main Script -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
