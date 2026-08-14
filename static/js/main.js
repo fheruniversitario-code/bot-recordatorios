@@ -18,7 +18,60 @@ document.addEventListener('DOMContentLoaded', () => {
     cargarTema();
     initNavigation();
     cargarTodo();
+    iniciarAutoSincronizacion();
 });
+
+function iniciarAutoSincronizacion() {
+    // Sincronización automática silenciosa en segundo plano cada 15 segundos
+    setInterval(() => {
+        cargarTodoSilencioso();
+    }, 15000);
+
+    // Sincronizar automáticamente en cuanto se abre la pantalla del celular
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            cargarTodoSilencioso();
+        }
+    });
+
+    window.addEventListener('focus', () => {
+        cargarTodoSilencioso();
+    });
+}
+
+async function cargarTodoSilencioso() {
+    try {
+        await Promise.all([
+            cargarUnidades(),
+            cargarCategorias(),
+            cargarFrecuencias(),
+            cargarTareasSilencioso()
+        ]);
+    } catch (e) {}
+}
+
+async function cargarTareasSilencioso() {
+    try {
+        appState.filtroUnidad = document.getElementById('select-filtro-unidad').value;
+        appState.filtroFrecuencia = document.getElementById('select-filtro-frecuencia').value;
+
+        const queryParams = new URLSearchParams({
+            estado: appState.filtroEstado,
+            tipo: appState.filtroTipo === 'todas' ? '' : appState.filtroTipo,
+            unidad: appState.filtroUnidad,
+            frecuencia: appState.filtroFrecuencia,
+            busqueda: document.getElementById('input-search').value
+        });
+
+        const res = await fetch(`/api/tareas?${queryParams.toString()}`);
+        const json = await res.json();
+        if (json.status === 'success') {
+            appState.tareas = json.data;
+            renderTasksGrid(json.data);
+            renderDashboardMetrics();
+        }
+    } catch (e) {}
+}
 
 function cargarTema() {
     const temaGuardado = localStorage.getItem('app_theme') || 'dark';

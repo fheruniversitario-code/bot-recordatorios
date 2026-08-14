@@ -599,6 +599,46 @@
             ],
             "completada": false,
             "creada_el": "2026-08-13 22:59:53"
+        },
+        {
+            "id": "7b359a7a",
+            "tarea": "Reporte Trimestral de Epidemiología",
+            "descripcion": "Verificar vacunas e inventario",
+            "tipo_destino": "unidad",
+            "unidad": "CAISES Guanajuato",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "trimestral",
+            "fecha_inicio": "2026-11-23",
+            "fecha_entrega": "2026-11-30",
+            "hora_entrega": "09:00",
+            "dias_aviso": 7,
+            "recordatorios_por_dia": 1,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-14 00:06:52"
+        },
+        {
+            "id": "137b5484",
+            "tarea": "Reporte Trimestral de Epidemiología",
+            "descripcion": "Verificar vacunas e inventario",
+            "tipo_destino": "unidad",
+            "unidad": "UMAPS Puentecillas",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "trimestral",
+            "fecha_inicio": "2026-11-23",
+            "fecha_entrega": "2026-11-30",
+            "hora_entrega": "09:00",
+            "dias_aviso": 7,
+            "recordatorios_por_dia": 1,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-14 00:06:52"
         }
     ],
     "historial": [
