@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Recordatorios | Unidades de Salud & Personales</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dark-theme">
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-hospital-user"></i>
+                </div>
+                <div class="brand-text">
+                    <h2>Salud <span>Remind</span></h2>
+                    <p>Gestor CAISES & Personal</p>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-item active" data-target="sec-checklist" id="nav-checklist">
+                    <i class="fa-solid fa-list-check"></i>
+                    <span>Checklist Pendientes</span>
+                </button>
+                <button class="nav-item" data-target="sec-dashboard" id="nav-dashboard">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Dashboard & Métricas</span>
+                </button>
+                <button class="nav-item" data-target="sec-historial" id="nav-historial">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>Historial Cumplido</span>
+                </button>
+                <button class="nav-item" data-target="sec-unidades" id="nav-unidades">
+                    <i class="fa-solid fa-building-user"></i>
+                    <span>Unidades & Categorías</span>
+                </button>
+                <button class="nav-item" data-target="sec-config" id="nav-config">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Bot Telegram & Ajustes</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-create-primary" onclick="abrirModalNuevaTarea()">
+                    <i class="fa-solid fa-plus"></i> Nueva Tarea en Lote
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header Bar -->
+            <header class="top-header">
+                <div class="header-search">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="input-search" placeholder="Buscar pendiente, unidad o descripción..." onkeyup="filtrarTareasLocal()">
+                </div>
+                <div class="header-actions">
+                    <button class="btn-icon" id="btn-theme-toggle" title="Cambiar Tema (Claro / Oscuro)" onclick="toggleTema()">
+                        <i class="fa-solid fa-sun" id="icon-theme"></i> <span id="text-theme">Tema</span>
+                    </button>
+                    <button class="btn-icon" title="Descargar Respaldo JSON de Datos" onclick="window.open('/api/respaldo/json', '_blank')">
+                        <i class="fa-solid fa-database"></i> Respaldo
+                    </button>
+                    <button class="btn-icon" title="Descargar Reporte PDF" onclick="descargarPDF()">
+                        <i class="fa-solid fa-file-pdf"></i> PDF
+                    </button>
+                    <button class="btn-icon" title="Actualizar Datos" onclick="cargarTodo()">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- SECTION 1: CHECKLIST PENDIENTES -->
+            <section id="sec-checklist" class="app-section active">
+                <div class="section-header">
+                    <div>
+                        <h1>Checklist de Pendientes</h1>
+                        <p>Supervisa tus actividades recurrentes (Mensual, Trimestral, Quincenal, etc.) en tiempo y forma.</p>
+                    </div>
+                    <button class="btn-action btn-primary" onclick="abrirModalNuevaTarea()">
+                        <i class="fa-solid fa-layer-group"></i> Crear en Múltiples Unidades
+                    </button>
+                </div>
+
+                <!-- Scope Toggle: Unidades de Salud vs Personales -->
+                <div class="scope-tabs">
+                    <button class="scope-tab active" data-tipo="todas" onclick="cambiarFiltroTipo(this, 'todas')">
+                        <i class="fa-solid fa-globe"></i> Todos los Ámbitos
+                    </button>
+                    <button class="scope-tab" data-tipo="unidad" onclick="cambiarFiltroTipo(this, 'unidad')">
+                        <i class="fa-solid fa-hospital-clinic"></i> Unidades de Salud
+                    </button>
+                    <button class="scope-tab" data-tipo="personal" onclick="cambiarFiltroTipo(this, 'personal')">
+                        <i class="fa-solid fa-user-gear"></i> Personales / Generales
+                    </button>
+                </div>
+
+                <!-- Filter Controls -->
+                <div class="filter-bar glass-card">
+                    <div class="filter-group">
+                        <label><i class="fa-solid fa-filter"></i> Estado:</label>
+                        <div class="pill-filters" id="pills-estado">
+                            <button class="pill active" onclick="cambiarFiltroEstado(this, 'activas')">Activas</button>
+                            <button class="pill pill-danger" onclick="cambiarFiltroEstado(this, 'vencida')">🚨 Vencidas</button>
+                            <button class="pill pill-warning" onclick="cambiarFiltroEstado(this, 'por_vencer')">⚡ Por Vencer</button>
+                            <button class="pill pill-success" onclick="cambiarFiltroEstado(this, 'pendiente')">🌱 En Tiempo</button>
+                            <button class="pill" onclick="cambiarFiltroEstado(this, 'completadas')">✅ Completadas</button>
+                        </div>
+                    </div>
+
+                    <div class="filter-inline-selects">
+                        <div class="select-wrapper">
+                            <label><i class="fa-solid fa-building"></i> Unidad:</label>
+                            <select id="select-filtro-unidad" onchange="cargarTareas()">
+                                <option value="Todas">Todas las Unidades</option>
+                            </select>
+                        </div>
+                        <div class="select-wrapper">
+                            <label><i class="fa-solid fa-repeat"></i> Frecuencia:</label>
+                            <select id="select-filtro-frecuencia" onchange="cargarTareas()">
+                                <option value="Todas">Todas las Frecuencias</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tasks Cards Grid -->
+                <div class="tasks-grid" id="tasks-container">
+                    <div class="loading-state">
+                        <i class="fa-solid fa-circle-notch fa-spin"></i>
+                        <p>Cargando pendientes...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: DASHBOARD & METRICS -->
+            <section id="sec-dashboard" class="app-section">
+                <div class="section-header">
+                    <div>
+                        <h1>Dashboard & Métricas</h1>
+                        <p>Estado global del cumplimiento de actividades y alertas preventivas.</p>
+                    </div>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon icon-blue"><i class="fa-solid fa-list-check"></i></div>
+                        <div class="stat-info">
+                            <h3 id="stat-total-activas">0</h3>
+                            <p>Tareas Activas</p>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon icon-red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div class="stat-info">
+                            <h3 id="stat-vencidas">0</h3>
+                            <p>Vencidas (Acción Inmediata)</p>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon icon-orange"><i class="fa-solid fa-bell"></i></div>
+                        <div class="stat-info">
+                            <h3 id="stat-por-vencer">0</h3>
+                            <p>En Periodo de Aviso</p>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-icon icon-green"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="stat-info">
+                            <h3 id="stat-cumplidas">0</h3>
+                            <p>Cumplidas en Historial</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-details grid-2col">
+                    <div class="glass-card detail-box">
+                        <h3><i class="fa-solid fa-chart-column"></i> Estado por Unidad de Salud</h3>
+                        <div class="unit-breakdown" id="unit-breakdown-container">
+                            <!-- Injected JS -->
+                        </div>
+                    </div>
+
+                    <div class="glass-card detail-box">
+                        <h3><i class="fa-solid fa-lightbulb"></i> Resumen de Recurrencias</h3>
+                        <ul class="info-list">
+                            <li><i class="fa-solid fa-circle-info"></i> Las tareas **Mensuales, Trimestrales, Bimensuales, etc.** se reprograman automáticamente al marcarlas como realizadas.</li>
+                            <li><i class="fa-solid fa-circle-info"></i> Puedes configurar **horario específico** y elegir recibir de 1 a 3 recordatorios diarios en Telegram por tarea.</li>
+                            <li><i class="fa-solid fa-circle-info"></i> Si ya no realizarás una tarea recurrente, usa la opción <b>"🛑 Finalizar Serie"</b> para cancelarla definitivamente.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: HISTORIAL -->
+            <section id="sec-historial" class="app-section">
+                <div class="section-header">
+                    <div>
+                        <h1>Historial de Cumplimiento</h1>
+                        <p>Registro completo de actividades finalizadas para auditoría y expediente.</p>
+                    </div>
+                    <button class="btn-action btn-danger" onclick="limpiarHistorial()">
+                        <i class="fa-solid fa-trash-can"></i> Limpiar Historial
+                    </button>
+                </div>
+
+                <div class="glass-card table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha Cumplido</th>
+                                <th>Tarea</th>
+                                <th>Unidad / Ámbito</th>
+                                <th>Categoría</th>
+                                <th>Frecuencia</th>
+                                <th>Fecha y Hora Límite Original</th>
+                                <th>Notas</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbl-historial-body">
+                            <!-- Injected via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECTION 4: UNIDADES & CATEGORÍAS -->
+            <section id="sec-unidades" class="app-section">
+                <div class="section-header">
+                    <div>
+                        <h1>Gestión de Unidades de Salud & Categorías</h1>
+                        <p>Tú controlas y alimentas libremente este listado con las unidades a tu cargo y tus etiquetas personalizadas.</p>
+                    </div>
+                </div>
+
+                <div class="grid-2col">
+                    <!-- Unidades -->
+                    <div class="glass-card">
+                        <h3><i class="fa-solid fa-hospital"></i> Unidades de Salud</h3>
+                        <div class="add-inline-form">
+                            <input type="text" id="input-nueva-unidad" placeholder="Nombre de la unidad (ej. UMAPS La Calera)">
+                            <button class="btn-primary" onclick="agregarUnidad()"><i class="fa-solid fa-plus"></i> Agregar</button>
+                        </div>
+                        <ul class="custom-list" id="list-unidades">
+                            <!-- JS -->
+                        </ul>
+                    </div>
+
+                    <!-- Categorías -->
+                    <div class="glass-card">
+                        <h3><i class="fa-solid fa-tags"></i> Categorías de Pendientes</h3>
+                        <div class="add-inline-form">
+                            <input type="text" id="input-nueva-categoria" placeholder="Nombre de categoría (ej. Cadena de Frío)">
+                            <button class="btn-primary" onclick="agregarCategoria()"><i class="fa-solid fa-plus"></i> Agregar</button>
+                        </div>
+                        <ul class="custom-list" id="list-categorias">
+                            <!-- JS -->
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 5: CONFIGURACIÓN & TELEGRAM -->
+            <section id="sec-config" class="app-section">
+                <div class="section-header">
+                    <div>
+                        <h1>Configuración del Bot de Telegram</h1>
+                        <p>Vincula tu Bot de Telegram para recibir avisos automáticos diarios e interactuar con tus tareas.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card form-container">
+                    <form id="form-config" onsubmit="guardarConfiguracion(event)">
+                        <div class="form-group">
+                            <label><i class="fa-brands fa-telegram"></i> Telegram Token del Bot:</label>
+                            <input type="text" id="cfg-token" placeholder="Ej: 123456789:ABCdefGhIJKlmNoPQRstUVwxyZ">
+                            <small>Consíguelo creando un bot con @BotFather en Telegram.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-id-badge"></i> Tu Telegram Chat ID:</label>
+                            <input type="text" id="cfg-chat-id" placeholder="Ej: 987654321">
+                            <small>Para saber tu Chat ID, escribe al bot @userinfobot o envía un mensaje a tu propio bot.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-clock"></i> Hora de Envió del Resumen Diario Principal:</label>
+                            <input type="time" id="cfg-hora" value="08:00">
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-calendar-day"></i> Días de aviso predeterminados antes de entrega:</label>
+                            <input type="number" id="cfg-dias" min="1" max="60" value="5">
+                        </div>
+
+                        <button type="submit" class="btn-primary btn-large">
+                            <i class="fa-solid fa-floppy-disk"></i> Guardar Configuración
+                        </button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- MODAL: NUEVA TAREA / EN LOTE -->
+    <div class="modal-backdrop" id="modal-tarea">
+        <div class="modal-box glass-card">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-calendar-plus"></i> Registrar Pendiente (Lote o Individual)</h2>
+                <button class="btn-close" onclick="cerrarModalTarea()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="form-nueva-tarea" onsubmit="guardarNuevaTarea(event)">
+                <div class="form-group">
+                    <label>Título de la Tarea / Actividad *</label>
+                    <input type="text" id="t-titulo" required placeholder="Ej. Informe Mensual de Salud Materna / Limpieza Cadena de Frío">
+                </div>
+
+                <div class="form-group">
+                    <label>Descripción / Observaciones</label>
+                    <textarea id="t-descripcion" rows="2" placeholder="Detalles de lo que se debe revisar o anexos a entregar..."></textarea>
+                </div>
+
+                <div class="form-row grid-2col">
+                    <div class="form-group">
+                        <label>Tipo de Ámbito *</label>
+                        <div class="radio-group-pills">
+                            <label class="radio-pill">
+                                <input type="radio" name="tipo_destino" value="unidad" checked onchange="toggleDestinoMode()">
+                                <span><i class="fa-solid fa-hospital"></i> Unidades de Salud</span>
+                            </label>
+                            <label class="radio-pill">
+                                <input type="radio" name="tipo_destino" value="personal" onchange="toggleDestinoMode()">
+                                <span><i class="fa-solid fa-user"></i> Personal / General</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <select id="t-categoria"></select>
+                    </div>
+                </div>
+
+                <!-- Unidades Selector (Lote) -->
+                <div class="form-group" id="box-unidades-lote">
+                    <div class="label-with-action">
+                        <label>Seleccionar Unidad(es) de Salud (Crea tareas en lote) *</label>
+                        <button type="button" class="btn-text-action" onclick="toggleSelectAllUnidades()">Seleccionar Todas</button>
+                    </div>
+                    <div class="unidades-checkboxes-grid" id="container-unidades-checkboxes">
+                        <!-- JS injected -->
+                    </div>
+                </div>
+
+                <div class="form-row grid-3col">
+                    <div class="form-group">
+                        <label>Frecuencia / Recurrencia *</label>
+                        <select id="t-frecuencia" required></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Fecha Límite de Entrega *</label>
+                        <input type="date" id="t-fecha-entrega" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hora Límite / Cumplimiento *</label>
+                        <input type="time" id="t-hora-entrega" value="09:00" required>
+                    </div>
+                </div>
+
+                <div class="form-row grid-2col">
+                    <div class="form-group">
+                        <label>¿Cuántos días antes comenzar avisos? *</label>
+                        <input type="number" id="t-dias-aviso" min="1" max="60" value="5" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Recordatorios por día en Telegram *</label>
+                        <select id="t-recordatorios-dia" required>
+                            <option value="1">1 vez al día (08:00 AM)</option>
+                            <option value="2">2 veces al día (08:00 AM y 03:00 PM)</option>
+                            <option value="3">3 veces al día (08:00 AM, 01:00 PM y 07:00 PM)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Canales de Recordatorio</label>
+                    <div class="checkbox-group">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="chk-rec-telegram" checked>
+                            <span><i class="fa-brands fa-telegram"></i> Mensaje en Telegram</span>
+                        </label>
+                        <label class="custom-checkbox">
+                            <input type="checkbox" id="chk-rec-visual" checked>
+                            <span><i class="fa-solid fa-desktop"></i> Alerta Visual en App</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="cerrarModalTarea()">Cancelar</button>
+                    <button type="submit" class="btn-primary"><i class="fa-solid fa-check"></i> Guardar Tareas</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: EDITAR TAREA -->
+    <div class="modal-backdrop" id="modal-editar">
+        <div class="modal-box glass-card">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-pen-to-square"></i> Editar Pendiente</h2>
+                <button class="btn-close" onclick="cerrarModalEditar()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="form-editar-tarea" onsubmit="guardarEdicionTarea(event)">
+                <input type="hidden" id="edit-id">
+                
+                <div class="form-group">
+                    <label>Título de la Tarea</label>
+                    <input type="text" id="edit-titulo" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea id="edit-descripcion" rows="2"></textarea>
+                </div>
+
+                <div class="form-row grid-2col">
+                    <div class="form-group">
+                        <label>Unidad / Ámbito</label>
+                        <select id="edit-unidad"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <select id="edit-categoria"></select>
+                    </div>
+                </div>
+
+                <div class="form-row grid-3col">
+                    <div class="form-group">
+                        <label>Frecuencia</label>
+                        <select id="edit-frecuencia"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha Límite</label>
+                        <input type="date" id="edit-fecha-entrega" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Hora Límite</label>
+                        <input type="time" id="edit-hora-entrega" required>
+                    </div>
+                </div>
+
+                <div class="form-row grid-2col">
+                    <div class="form-group">
+                        <label>Días de aviso previo</label>
+                        <input type="number" id="edit-dias-aviso" min="1" max="60" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Recordatorios por día</label>
+                        <select id="edit-recordatorios-dia">
+                            <option value="1">1 vez al día (08:00 AM)</option>
+                            <option value="2">2 veces al día (08:00 AM y 03:00 PM)</option>
+                            <option value="3">3 veces al día (08:00 AM, 01:00 PM y 07:00 PM)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="cerrarModalEditar()">Cancelar</button>
+                    <button type="submit" class="btn-primary"><i class="fa-solid fa-floppy-disk"></i> Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notifications Toast -->
+    <div id="toast" class="toast"></div>
+
+    <!-- JS Scripts -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+{
+    "unidades": [
+        "UMAPS Marfil",
+        "UMAPS Santa Teresa",
+        "jaral del progreso"
+    ],
+    "categorias": [
+        "Informes y Reportes",
+        "Inventarios y Medicamentos",
+        "Supervisión y Auditoría",
+        "Cadena de Frío",
+        "Vacunación",
+        "Mantenimiento",
+        "Personal / General"
+    ],
+    "configuracion": {
+        "telegram_token": "",
+        "telegram_chat_id": "",
+        "hora_notificacion_diaria": "08:00",
+        "dias_aviso_defecto": 5
+    },
+    "tareas": [
+        {
+            "id": "47107fa2",
+            "tarea": "Reporte Trimestral de Epidemiología",
+            "descripcion": "Verificar vacunas e inventario",
+            "tipo_destino": "unidad",
+            "unidad": "CAISES Guanajuato",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "trimestral",
+            "fecha_inicio": "2026-11-23",
+            "fecha_entrega": "2026-11-30",
+            "dias_aviso": 7,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-13 10:15:28",
+            "hora_entrega": "09:00",
+            "recordatorios_por_dia": 1
+        },
+        {
+            "id": "dc76eadf",
+            "tarea": "Reporte Trimestral de Epidemiología",
+            "descripcion": "Verificar vacunas e inventario",
+            "tipo_destino": "unidad",
+            "unidad": "UMAPS Puentecillas",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "trimestral",
+            "fecha_inicio": "2026-11-23",
+            "fecha_entrega": "2026-11-30",
+            "dias_aviso": 7,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-13 10:15:28",
+            "hora_entrega": "09:00",
+            "recordatorios_por_dia": 1
+        },
+        {
+            "id": "2f6be464",
+            "tarea": "Reporte Trimestral de Epidemiología",
+            "descripcion": "Verificar vacunas e inventario",
+            "tipo_destino": "unidad",
+            "unidad": "CAISES Guanajuato",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "trimestral",
+            "fecha_inicio": "2026-11-23",
+            "fecha_entrega": "2026-11-30",
+            "dias_aviso": 7,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-13 10:16:06",
+            "hora_entrega": "09:00",
+            "recordatorios_por_dia": 1
+        },
+        {
+            "id": "42d9b411",
+            "tarea": "Reporte Trimestral de Epidemiología",
+            "descripcion": "Verificar vacunas e inventario",
+            "tipo_destino": "unidad",
+            "unidad": "UMAPS Puentecillas",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "trimestral",
+            "fecha_inicio": "2026-11-23",
+            "fecha_entrega": "2026-11-30",
+            "dias_aviso": 7,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-13 10:16:06",
+            "hora_entrega": "09:00",
+            "recordatorios_por_dia": 1
+        },
+        {
+            "id": "19223b5f",
+            "tarea": "hacer tazas",
+            "descripcion": "",
+            "tipo_destino": "personal",
+            "unidad": "Personal / General",
+            "categoria": "Personal / General",
+            "frecuencia": "unica",
+            "fecha_inicio": "2026-08-12",
+            "fecha_entrega": "2026-08-13",
+            "dias_aviso": 1,
+            "recordatorios": [
+                "Visual en App"
+            ],
+            "completada": true,
+            "creada_el": "2026-08-13 10:26:48",
+            "fecha_completada": "2026-08-13 10:27:59",
+            "hora_entrega": "09:00",
+            "recordatorios_por_dia": 1
+        },
+        {
+            "id": "f6dbc7ab",
+            "tarea": "Reporte Trimestral de Epidemiología",
+            "descripcion": "Verificar vacunas e inventario",
+            "tipo_destino": "unidad",
+            "unidad": "CAISES Guanajuato",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "trimestral",
+            "fecha_inicio": "2026-11-23",
+            "fecha_entrega": "2026-11-30",
+            "hora_entrega": "09:00",
+            "dias_aviso": 7,
+            "recordatorios_por_dia": 1,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-13 10:30:09"
+        },
+        {
+            "id": "f774ae40",
+            "tarea": "Reporte Trimestral de Epidemiología",
+            "descripcion": "Verificar vacunas e inventario",
+            "tipo_destino": "unidad",
+            "unidad": "UMAPS Puentecillas",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "trimestral",
+            "fecha_inicio": "2026-11-23",
+            "fecha_entrega": "2026-11-30",
+            "hora_entrega": "09:00",
+            "dias_aviso": 7,
+            "recordatorios_por_dia": 1,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-13 10:30:09"
+        },
+        {
+            "id": "2bd7242a",
+            "tarea": "Reporte Trimestral de Epidemiología",
+            "descripcion": "Verificar vacunas e inventario",
+            "tipo_destino": "unidad",
+            "unidad": "CAISES Guanajuato",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "trimestral",
+            "fecha_inicio": "2026-11-23",
+            "fecha_entrega": "2026-11-30",
+            "hora_entrega": "09:00",
+            "dias_aviso": 7,
+            "recordatorios_por_dia": 1,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-13 10:42:54"
+        },
+        {
+            "id": "e1710601",
+            "tarea": "Reporte Trimestral de Epidemiología",
+            "descripcion": "Verificar vacunas e inventario",
+            "tipo_destino": "unidad",
+            "unidad": "UMAPS Puentecillas",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "trimestral",
+            "fecha_inicio": "2026-11-23",
+            "fecha_entrega": "2026-11-30",
+            "hora_entrega": "09:00",
+            "dias_aviso": 7,
+            "recordatorios_por_dia": 1,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-13 10:42:54"
+        },
+        {
+            "id": "49cf0264",
+            "tarea": "Reporte Trimestral de Epidemiología",
+            "descripcion": "Verificar vacunas e inventario",
+            "tipo_destino": "unidad",
+            "unidad": "CAISES Guanajuato",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "trimestral",
+            "fecha_inicio": "2026-11-23",
+            "fecha_entrega": "2026-11-30",
+            "hora_entrega": "09:00",
+            "dias_aviso": 7,
+            "recordatorios_por_dia": 1,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-13 11:00:27"
+        },
+        {
+            "id": "cfc0d506",
+            "tarea": "Reporte Trimestral de Epidemiología",
+            "descripcion": "Verificar vacunas e inventario",
+            "tipo_destino": "unidad",
+            "unidad": "UMAPS Puentecillas",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "trimestral",
+            "fecha_inicio": "2026-11-23",
+            "fecha_entrega": "2026-11-30",
+            "hora_entrega": "09:00",
+            "dias_aviso": 7,
+            "recordatorios_por_dia": 1,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-13 11:00:27"
+        },
+        {
+            "id": "7531dcfc",
+            "tarea": "Reporte Trimestral de Epidemiología",
+            "descripcion": "Verificar vacunas e inventario",
+            "tipo_destino": "unidad",
+            "unidad": "CAISES Guanajuato",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "trimestral",
+            "fecha_inicio": "2026-11-23",
+            "fecha_entrega": "2026-11-30",
+            "hora_entrega": "09:00",
+            "dias_aviso": 7,
+            "recordatorios_por_dia": 1,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-13 11:00:52"
+        },
+        {
+            "id": "4fc40c3f",
+            "tarea": "Reporte Trimestral de Epidemiología",
+            "descripcion": "Verificar vacunas e inventario",
+            "tipo_destino": "unidad",
+            "unidad": "UMAPS Puentecillas",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "trimestral",
+            "fecha_inicio": "2026-11-23",
+            "fecha_entrega": "2026-11-30",
+            "hora_entrega": "09:00",
+            "dias_aviso": 7,
+            "recordatorios_por_dia": 1,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-13 11:00:52"
+        }
+    ],
+    "historial": [
+        {
+            "id": "a9aee440",
+            "tarea_id": "19223b5f",
+            "tarea": "hacer tazas",
+            "unidad": "Personal / General",
+            "categoria": "Personal / General",
+            "frecuencia": "unica",
+            "fecha_entrega_original": "2026-08-13",
+            "fecha_cumplimiento": "2026-08-13 10:27:59",
+            "notas": "Completada desde la Web App"
+        }
+    ]
+}

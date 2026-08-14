@@ -1,0 +1,6 @@
+flask
+pyTelegramBotAPI
+schedule
+reportlab
+requests
+gunicorn
