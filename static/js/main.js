@@ -389,12 +389,12 @@ async function renderDashboardMetrics() {
                 bContainer.innerHTML = Object.keys(data.por_unidad).map(u => {
                     const info = data.por_unidad[u];
                     return `
-                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border-glass);">
-                            <span><b>${u}</b></span>
-                            <span>
-                                <span class="badge badge-status-orange" style="margin-right:6px;">${info.pendientes} pendientes</span>
-                                <span class="badge badge-unit">${info.completadas} cumplidas</span>
-                            </span>
+                        <div class="unit-metrics-row">
+                            <div class="unit-name"><b>${u}</b></div>
+                            <div class="unit-badges-group">
+                                <span class="badge badge-status-orange">${info.pendientes} PENDIENTES</span>
+                                <span class="badge badge-unit">${info.completadas} CUMPLIDAS</span>
+                            </div>
                         </div>
                     `;
                 }).join('');
