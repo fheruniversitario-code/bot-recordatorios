@@ -1029,18 +1029,171 @@ h1, h2, h3, h4, h5, h6 {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsive Breakdown */
-@media (max-width: 992px) {
-    .sidebar { width: 80px; padding: 16px 8px; }
-    .brand-text, .nav-item span, .sidebar-footer p { display: none; }
-    .main-content { margin-left: 80px; padding: 20px; }
-    .grid-2col { grid-template-columns: 1fr; }
+/* Mobile Header Bar & Drawer */
+.mobile-nav-bar {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: var(--bg-sidebar);
+    border-bottom: 1px solid var(--border-glass);
+    padding: 0 16px;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
 }
 
-@media (max-width: 600px) {
-    .sidebar { display: none; }
-    .main-content { margin-left: 0; padding: 16px; }
-    .top-header { flex-direction: column; align-items: stretch; }
-    .header-search { width: 100%; }
-    .grid-3col { grid-template-columns: 1fr; }
+.mobile-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-main);
+
+    i { color: var(--accent); }
+    b { color: var(--accent); }
+}
+
+.btn-sm {
+    padding: 8px 14px;
+    font-size: 12px;
+    border-radius: var(--radius-sm);
+}
+
+.sidebar-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1050;
+}
+
+.btn-close-sidebar {
+    display: none;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Mobile Bottom Navigation Bar (Estilo App Nativa iOS/Android) */
+.mobile-bottom-bar {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 64px;
+    background: rgba(9, 13, 22, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid var(--border-glass);
+    z-index: 1000;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 10px;
+}
+
+body.light-theme .mobile-bottom-bar {
+    background: rgba(255, 255, 255, 0.95);
+    border-top-color: #cbd5e1;
+}
+
+.bottom-item {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    font-size: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    flex: 1;
+    transition: var(--transition);
+
+    i {
+        font-size: 18px;
+    }
+
+    &.active {
+        color: var(--accent);
+        font-weight: 600;
+    }
+}
+
+.bottom-fab {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), #0284c7);
+    color: #ffffff !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px !important;
+    box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
+    transform: translateY(-14px);
+    flex: 0 0 52px;
+
+    i {
+        font-size: 22px;
+    }
+
+    &:active {
+        transform: translateY(-12px) scale(0.95);
+    }
+}
+
+/* Responsive Breakdown */
+@media (max-width: 768px) {
+    .mobile-nav-bar { display: flex; }
+    .mobile-bottom-bar { display: flex; }
+
+    .main-content {
+        margin-left: 0 !important;
+        padding: 76px 16px 84px 16px !important; /* Espacio arriba y abajo para barras */
+    }
+
+    .top-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .header-search {
+        width: 100%;
+    }
+
+    .grid-2col, .grid-3col {
+        grid-template-columns: 1fr !original;
+        grid-template-columns: 1fr;
+    }
+
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-inline-selects {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .select-wrapper select {
+        width: 100%;
+    }
 }

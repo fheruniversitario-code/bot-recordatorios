@@ -75,6 +75,9 @@ function initNavigation() {
             const targetSec = document.getElementById(targetId);
             if (targetSec) targetSec.classList.add('active');
 
+            // Auto-cerrar sidebar en móviles tras hacer clic
+            cerrarMobileSidebar();
+
             if (targetId === 'sec-dashboard') {
                 renderDashboardMetrics();
             } else if (targetId === 'sec-historial') {
@@ -82,6 +85,45 @@ function initNavigation() {
             }
         });
     });
+}
+
+function toggleMobileSidebar() {
+    const sidebar = document.getElementById('app-sidebar');
+    const backdrop = document.querySelector('.sidebar-backdrop');
+    if (sidebar) sidebar.classList.toggle('mobile-open');
+    if (backdrop) backdrop.classList.toggle('active');
+}
+
+function cerrarMobileSidebar() {
+    const sidebar = document.getElementById('app-sidebar');
+    const backdrop = document.querySelector('.sidebar-backdrop');
+    if (sidebar) sidebar.classList.remove('mobile-open');
+    if (backdrop) backdrop.classList.remove('active');
+}
+
+function clickBottomNav(targetId, btn) {
+    document.querySelectorAll('.bottom-item').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+
+    // Sincronizar con sidebar
+    document.querySelectorAll('.nav-item').forEach(n => {
+        n.classList.remove('active');
+        if (n.getAttribute('data-target') === targetId) {
+            n.classList.add('active');
+        }
+    });
+
+    document.querySelectorAll('.app-section').forEach(sec => sec.classList.remove('active'));
+    const targetSec = document.getElementById(targetId);
+    if (targetSec) targetSec.classList.add('active');
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (targetId === 'sec-dashboard') {
+        renderDashboardMetrics();
+    } else if (targetId === 'sec-historial') {
+        cargarHistorial();
+    }
 }
 
 // --- DATA FETCHING ---

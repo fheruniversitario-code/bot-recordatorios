@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- PWA & Mobile Meta Tags -->
+    <meta name="theme-color" content="#0284c7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    
     <title>Gestor de Recordatorios | Unidades de Salud & Personales</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,9 +20,50 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body class="dark-theme">
+    <!-- Mobile Header Bar -->
+    <div class="mobile-nav-bar">
+        <button class="btn-icon" onclick="toggleMobileSidebar()" id="btn-mobile-menu">
+            <i class="fa-solid fa-bars"></i> Menu
+        </button>
+        <div class="mobile-brand">
+            <i class="fa-solid fa-hospital-user"></i>
+            <span>Salud <b>Remind</b></span>
+        </div>
+        <button class="btn-primary btn-sm" onclick="abrirModalNuevaTarea()">
+            <i class="fa-solid fa-plus"></i> Nueva
+        </button>
+    </div>
+
+    <!-- Mobile Bottom Navigation Bar (Estilo App Nativa) -->
+    <div class="mobile-bottom-bar">
+        <button class="bottom-item active" onclick="clickBottomNav('sec-checklist', this)">
+            <i class="fa-solid fa-list-check"></i>
+            <span>Pendientes</span>
+        </button>
+        <button class="bottom-item" onclick="clickBottomNav('sec-dashboard', this)">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Métricas</span>
+        </button>
+        <button class="bottom-item bottom-fab" onclick="abrirModalNuevaTarea()" title="Crear Nueva Tarea">
+            <i class="fa-solid fa-plus"></i>
+        </button>
+        <button class="bottom-item" onclick="clickBottomNav('sec-historial', this)">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>Historial</span>
+        </button>
+        <button class="bottom-item" onclick="clickBottomNav('sec-config', this)">
+            <i class="fa-solid fa-gear"></i>
+            <span>Ajustes</span>
+        </button>
+    </div>
+
+    <!-- Mobile Sidebar Backdrop -->
+    <div class="sidebar-backdrop" onclick="cerrarMobileSidebar()"></div>
+
     <div class="app-layout">
         <!-- Sidebar Navigation -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="app-sidebar">
+            <button class="btn-close-sidebar" onclick="cerrarMobileSidebar()"><i class="fa-solid fa-xmark"></i></button>
             <div class="brand">
                 <div class="brand-icon">
                     <i class="fa-solid fa-hospital-user"></i>
