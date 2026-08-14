@@ -182,6 +182,33 @@ class DatabaseManager:
             return True, "Unidad eliminada."
         return False, "Unidad no encontrada."
 
+    def editar_unidad(self, nombre_anterior, nuevo_nombre):
+        nombre_anterior = nombre_anterior.strip()
+        nuevo_nombre = nuevo_nombre.strip()
+        if not nuevo_nombre:
+            return False, "El nuevo nombre de la unidad no puede estar vacío."
+        datos = self.cargar_datos()
+        if nombre_anterior not in datos["unidades"]:
+            return False, "Unidad original no encontrada."
+        if nuevo_nombre != nombre_anterior and nuevo_nombre in datos["unidades"]:
+            return False, "Ya existe una unidad con ese nombre."
+
+        idx = datos["unidades"].index(nombre_anterior)
+        datos["unidades"][idx] = nuevo_nombre
+
+        # Actualizar tareas existentes asignadas a esta unidad
+        for t in datos.get("tareas", []):
+            if t.get("unidad") == nombre_anterior:
+                t["unidad"] = nuevo_nombre
+
+        # Actualizar historial
+        for h in datos.get("historial", []):
+            if h.get("unidad") == nombre_anterior:
+                h["unidad"] = nuevo_nombre
+
+        self.guardar_datos(datos)
+        return True, f"Unidad renombrada a '{nuevo_nombre}'."
+
     # --- CATEGORÍAS ---
     def obtener_categorias(self):
         return self.cargar_datos().get("categorias", DEFAULT_CATEGORIAS)
@@ -204,6 +231,33 @@ class DatabaseManager:
             self.guardar_datos(datos)
             return True, "Categoría eliminada."
         return False, "Categoría no encontrada."
+
+    def editar_categoria(self, nombre_anterior, nuevo_nombre):
+        nombre_anterior = nombre_anterior.strip()
+        nuevo_nombre = nuevo_nombre.strip()
+        if not nuevo_nombre:
+            return False, "El nuevo nombre no puede estar vacío."
+        datos = self.cargar_datos()
+        if nombre_anterior not in datos["categorias"]:
+            return False, "Categoría original no encontrada."
+        if nuevo_nombre != nombre_anterior and nuevo_nombre in datos["categorias"]:
+            return False, "Ya existe una categoría con ese nombre."
+
+        idx = datos["categorias"].index(nombre_anterior)
+        datos["categorias"][idx] = nuevo_nombre
+
+        # Actualizar tareas existentes con esta categoría
+        for t in datos.get("tareas", []):
+            if t.get("categoria") == nombre_anterior:
+                t["categoria"] = nuevo_nombre
+
+        # Actualizar historial
+        for h in datos.get("historial", []):
+            if h.get("categoria") == nombre_anterior:
+                h["categoria"] = nuevo_nombre
+
+        self.guardar_datos(datos)
+        return True, f"Categoría renombrada a '{nuevo_nombre}'."
 
     # --- CONFIGURACIÓN ---
     def obtener_configuracion(self):

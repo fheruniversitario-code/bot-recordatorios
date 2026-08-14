@@ -129,7 +129,7 @@ def eliminar_tarea(tarea_id):
     return jsonify({"status": "error", "message": mensaje}), 400
 
 
-@app.route("/api/unidades", methods=["GET", "POST", "DELETE"])
+@app.route("/api/unidades", methods=["GET", "POST", "PUT", "DELETE"])
 def gestionar_unidades():
     if request.method == "GET":
         return jsonify({"status": "success", "data": db.obtener_unidades()})
@@ -137,6 +137,14 @@ def gestionar_unidades():
         data = request.json or {}
         nombre = data.get("nombre", "")
         ok, msg = db.agregar_unidad(nombre)
+        if ok:
+            return jsonify({"status": "success", "message": msg, "data": db.obtener_unidades()})
+        return jsonify({"status": "error", "message": msg}), 400
+    elif request.method == "PUT":
+        data = request.json or {}
+        nombre_anterior = data.get("nombre_anterior", "")
+        nuevo_nombre = data.get("nuevo_nombre", "")
+        ok, msg = db.editar_unidad(nombre_anterior, nuevo_nombre)
         if ok:
             return jsonify({"status": "success", "message": msg, "data": db.obtener_unidades()})
         return jsonify({"status": "error", "message": msg}), 400
@@ -149,7 +157,7 @@ def gestionar_unidades():
         return jsonify({"status": "error", "message": msg}), 400
 
 
-@app.route("/api/categorias", methods=["GET", "POST", "DELETE"])
+@app.route("/api/categorias", methods=["GET", "POST", "PUT", "DELETE"])
 def gestionar_categorias():
     if request.method == "GET":
         return jsonify({"status": "success", "data": db.obtener_categorias()})
@@ -157,6 +165,14 @@ def gestionar_categorias():
         data = request.json or {}
         nombre = data.get("nombre", "")
         ok, msg = db.agregar_categoria(nombre)
+        if ok:
+            return jsonify({"status": "success", "message": msg, "data": db.obtener_categorias()})
+        return jsonify({"status": "error", "message": msg}), 400
+    elif request.method == "PUT":
+        data = request.json or {}
+        nombre_anterior = data.get("nombre_anterior", "")
+        nuevo_nombre = data.get("nuevo_nombre", "")
+        ok, msg = db.editar_categoria(nombre_anterior, nuevo_nombre)
         if ok:
             return jsonify({"status": "success", "message": msg, "data": db.obtener_categorias()})
         return jsonify({"status": "error", "message": msg}), 400

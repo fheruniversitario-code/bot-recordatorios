@@ -385,7 +385,10 @@ function renderUnidadesUI() {
     listAdmin.innerHTML = appState.unidades.map(u => `
         <li>
             <span><span style="margin-right: 8px;">🏥</span> ${u}</span>
-            <button class="btn-del-item" title="Eliminar" onclick="eliminarUnidad('${u}')"><span>🗑️</span></button>
+            <div style="display: flex; gap: 8px;">
+                <button class="btn-del-item" title="Editar Nombre" onclick="editarUnidad('${u}')" style="color: var(--accent);"><span>✏️</span></button>
+                <button class="btn-del-item" title="Eliminar" onclick="eliminarUnidad('${u}')"><span>🗑️</span></button>
+            </div>
         </li>
     `).join('');
 }
@@ -402,7 +405,10 @@ function renderCategoriasUI() {
     listAdmin.innerHTML = appState.categorias.map(c => `
         <li>
             <span><span style="margin-right: 8px;">🏷️</span> ${c}</span>
-            <button class="btn-del-item" title="Eliminar" onclick="eliminarCategoria('${c}')"><span>🗑️</span></button>
+            <div style="display: flex; gap: 8px;">
+                <button class="btn-del-item" title="Editar Nombre" onclick="editarCategoria('${c}')" style="color: var(--accent);"><span>✏️</span></button>
+                <button class="btn-del-item" title="Eliminar" onclick="eliminarCategoria('${c}')"><span>🗑️</span></button>
+            </div>
         </li>
     `).join('');
 }
@@ -752,6 +758,27 @@ async function eliminarUnidad(nombre) {
     } catch (e) { showToast("Error al eliminar.", 'error'); }
 }
 
+async function editarUnidad(nombreActual) {
+    const nuevoNombre = prompt(`Escribe el nuevo nombre para la unidad "${nombreActual}":`, nombreActual);
+    if (!nuevoNombre || nuevoNombre.trim() === '' || nuevoNombre.trim() === nombreActual) return;
+
+    try {
+        const res = await fetch('/api/unidades', {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({nombre_anterior: nombreActual, nuevo_nombre: nuevoNombre.trim()})
+        });
+        const json = await res.json();
+        if (json.status === 'success') {
+            showToast(json.message, 'success');
+            cargarUnidades();
+            cargarTareas();
+        } else {
+            showToast(json.message, 'error');
+        }
+    } catch (e) { showToast("Error al editar la unidad.", 'error'); }
+}
+
 async function agregarCategoria() {
     const input = document.getElementById('input-nueva-categoria');
     const val = input.value.trim();
@@ -788,6 +815,27 @@ async function eliminarCategoria(nombre) {
             cargarCategorias();
         }
     } catch (e) { showToast("Error al eliminar.", 'error'); }
+}
+
+async function editarCategoria(nombreActual) {
+    const nuevoNombre = prompt(`Escribe el nuevo nombre para la categoría "${nombreActual}":`, nombreActual);
+    if (!nuevoNombre || nuevoNombre.trim() === '' || nuevoNombre.trim() === nombreActual) return;
+
+    try {
+        const res = await fetch('/api/categorias', {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({nombre_anterior: nombreActual, nuevo_nombre: nuevoNombre.trim()})
+        });
+        const json = await res.json();
+        if (json.status === 'success') {
+            showToast(json.message, 'success');
+            cargarCategorias();
+            cargarTareas();
+        } else {
+            showToast(json.message, 'error');
+        }
+    } catch (e) { showToast("Error al editar la categoría.", 'error'); }
 }
 
 async function guardarConfiguracion(e) {
