@@ -342,9 +342,15 @@
                         <h3>🤖 Vinculación del Bot de Telegram</h3>
                         <form id="form-config" onsubmit="guardarConfiguracion(event)">
                             <div class="form-group" style="margin-top: 16px;">
+                                <label>🔒 PIN de Acceso a la App (Seguridad):</label>
+                                <input type="text" id="cfg-pin" placeholder="Ej. 2602" value="2602" required>
+                            </div>
+
+                            <div class="form-group">
                                 <label>HTTP API Token del Bot (@BotFather):</label>
                                 <input type="text" id="cfg-token" placeholder="Ej. 123456789:ABCdefGhIJKlmNoPQRstUVwxyZ">
                             </div>
+
 
                             <div class="form-group">
                                 <label>Tu Chat ID Personal (@userinfobot):</label>
@@ -560,7 +566,39 @@
     <!-- Toast Notification Box -->
     <div id="toast" class="toast"></div>
 
+    <!-- OVERLAY: PANTALLA DE ACCESO POR PIN (CLAVE 2602) -->
+    <div id="pin-overlay" class="pin-screen-backdrop" style="display: flex;">
+        <div class="pin-box glass-card">
+            <div class="pin-brand">
+                <span class="pin-icon">🏥</span>
+                <h2>Salud<span>Remind</span></h2>
+                <p>Ingresa tu PIN de acceso para acceder al sistema de recordatorios.</p>
+            </div>
+
+            <form id="form-pin-login" onsubmit="procesarLoginPIN(event)">
+                <div class="pin-input-group">
+                    <input type="password" id="input-pin-acceso" maxlength="8" placeholder="••••" autocomplete="current-password" inputmode="numeric" required autofocus>
+                </div>
+                
+                <div class="pin-remember-option">
+                    <label style="display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; margin: 12px 0; cursor: pointer; color: var(--text-muted);">
+                        <input type="checkbox" id="chk-remember-pin" checked> Mantener sesión iniciada en este dispositivo
+                    </label>
+                </div>
+
+                <div id="pin-error-msg" style="color: var(--status-red); font-size: 13px; text-align: center; display: none; margin-bottom: 12px;">
+                    ❌ PIN incorrecto. Intenta de nuevo.
+                </div>
+
+                <button type="submit" class="btn-action btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 15px;">
+                    🔓 Ingresar a la App
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- JS Main Script -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
+

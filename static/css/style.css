@@ -1437,3 +1437,78 @@ body.light-theme .mobile-bottom-bar {
         width: 100% !important;
     }
 }
+
+/* PIN Lock Screen Backdrop & Card */
+.pin-screen-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(9, 13, 22, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+body.light-theme .pin-screen-backdrop {
+    background: rgba(248, 250, 252, 0.96) !important;
+}
+
+.pin-box {
+    width: 100%;
+    max-width: 380px;
+    padding: 32px 24px;
+    text-align: center;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+.pin-brand .pin-icon {
+    font-size: 42px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.pin-brand h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--text-main);
+}
+
+.pin-brand h2 span {
+    color: var(--accent);
+}
+
+.pin-brand p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    line-height: 1.4;
+}
+
+.pin-input-group input {
+    width: 100%;
+    font-size: 28px;
+    letter-spacing: 12px;
+    text-align: center;
+    padding: 14px;
+    border-radius: var(--radius-md);
+    background: rgba(15, 23, 42, 0.9);
+    border: 2px solid var(--accent);
+    color: var(--text-main);
+    outline: none;
+}
+
+body.light-theme .pin-input-group input {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border-color: #0284c7 !important;
+}
+

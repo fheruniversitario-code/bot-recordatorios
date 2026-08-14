@@ -12,10 +12,32 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/api/auth/login", methods=["POST"])
+def auth_login():
+    data = request.json or {}
+    pin = data.get("pin", "")
+    if db.validar_pin(pin):
+        return jsonify({
+            "status": "success",
+            "message": "Acceso concedido",
+            "token": "valid_session_token_saludremind_2602"
+        })
+    return jsonify({"status": "error", "message": "PIN de acceso incorrecto."}), 401
+
+
+@app.route("/api/auth/verify", methods=["POST"])
+def auth_verify():
+    data = request.json or {}
+    token = data.get("token", "")
+    pin = data.get("pin", "")
+    if token == "valid_session_token_saludremind_2602" or db.validar_pin(pin):
+        return jsonify({"status": "success", "message": "Sesión válida."})
+    return jsonify({"status": "error", "message": "Sesión vencida o requerida."}), 401
+
+
 @app.route("/api/dashboard", methods=["GET"])
-def get_dashboard():
-    stats = db.obtener_estadisticas()
-    return jsonify({"status": "success", "data": stats})
+def get_dashboard_data():
+    return jsonify({"status": "success", "data": db.obtener_estadisticas()})
 
 
 @app.route("/api/tareas", methods=["GET"])

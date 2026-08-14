@@ -17,9 +17,75 @@ let appState = {
 document.addEventListener('DOMContentLoaded', () => {
     cargarTema();
     initNavigation();
-    cargarTodo();
+    verificarSesionPIN();
     iniciarAutoSincronizacion();
 });
+
+async function verificarSesionPIN() {
+    const token = localStorage.getItem('saludremind_session');
+    if (token) {
+        try {
+            const res = await fetch('/api/auth/verify', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({token: token})
+            });
+            const json = await res.json();
+            if (json.status === 'success') {
+                ocultarPantallaPIN();
+                cargarTodo();
+                return;
+            }
+        } catch (e) {}
+    }
+
+    mostrarPantallaPIN();
+}
+
+function mostrarPantallaPIN() {
+    const overlay = document.getElementById('pin-overlay');
+    if (overlay) overlay.style.display = 'flex';
+}
+
+function ocultarPantallaPIN() {
+    const overlay = document.getElementById('pin-overlay');
+    if (overlay) overlay.style.display = 'none';
+}
+
+async function procesarLoginPIN(event) {
+    event.preventDefault();
+    const pinInput = document.getElementById('input-pin-acceso');
+    const pin = pinInput.value.trim();
+    const errorMsg = document.getElementById('pin-error-msg');
+    const remember = document.getElementById('chk-remember-pin').checked;
+
+    try {
+        const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({pin: pin})
+        });
+
+        const json = await res.json();
+        if (json.status === 'success') {
+            if (remember) {
+                localStorage.setItem('saludremind_session', json.token);
+            }
+            errorMsg.style.display = 'none';
+            ocultarPantallaPIN();
+            cargarTodo();
+            showToast("🔓 ¡Acceso concedido!", 'success');
+        } else {
+            errorMsg.innerText = "❌ PIN incorrecto. Intenta de nuevo.";
+            errorMsg.style.display = 'block';
+            pinInput.value = '';
+            pinInput.focus();
+        }
+    } catch (e) {
+        errorMsg.innerText = "❌ Error conectando con el servidor.";
+        errorMsg.style.display = 'block';
+    }
+}
 
 function iniciarAutoSincronizacion() {
     // Sincronización automática silenciosa en segundo plano cada 15 segundos
@@ -229,6 +295,8 @@ async function cargarConfiguracion() {
         const json = await res.json();
         if (json.status === 'success') {
             appState.config = json.data;
+            const cfgPin = document.getElementById('cfg-pin');
+            if (cfgPin) cfgPin.value = json.data.pin_acceso || '2602';
             document.getElementById('cfg-token').value = json.data.telegram_token || '';
             document.getElementById('cfg-chat-id').value = json.data.telegram_chat_id || '';
             document.getElementById('cfg-hora').value = json.data.hora_notificacion_diaria || '08:00';
@@ -840,6 +908,7 @@ async function editarCategoria(nombreActual) {
 
 async function guardarConfiguracion(e) {
     e.preventDefault();
+    const pin = document.getElementById('cfg-pin').value.trim();
     const token = document.getElementById('cfg-token').value.trim();
     const chatId = document.getElementById('cfg-chat-id').value.trim();
     const hora = document.getElementById('cfg-hora').value;
@@ -850,6 +919,7 @@ async function guardarConfiguracion(e) {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
+                pin_acceso: pin || '2602',
                 telegram_token: token,
                 telegram_chat_id: chatId,
                 hora_notificacion_diaria: hora,

@@ -26,6 +26,7 @@ DEFAULT_CATEGORIAS = [
 ]
 
 DEFAULT_CONFIG = {
+    "pin_acceso": "2602",
     "telegram_token": "",
     "telegram_chat_id": "",
     "hora_notificacion_diaria": "08:00",
@@ -263,11 +264,18 @@ class DatabaseManager:
     def obtener_configuracion(self):
         datos = self.cargar_datos()
         config = datos.get("configuracion", DEFAULT_CONFIG)
+        if not config.get("pin_acceso"):
+            config["pin_acceso"] = "2602"
         if not config.get("telegram_token"):
             config["telegram_token"] = os.getenv("TELEGRAM_TOKEN", "")
         if not config.get("telegram_chat_id"):
             config["telegram_chat_id"] = os.getenv("TELEGRAM_CHAT_ID", "")
         return config
+
+    def validar_pin(self, pin_ingresado):
+        config = self.obtener_configuracion()
+        pin_correcto = str(config.get("pin_acceso", "2602")).strip()
+        return str(pin_ingresado).strip() == pin_correcto
 
     def actualizar_configuracion(self, nueva_config):
         datos = self.cargar_datos()
