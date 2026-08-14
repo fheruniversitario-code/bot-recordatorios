@@ -187,8 +187,8 @@ async function cargarConfiguracion() {
 async function cargarTareas() {
     const container = document.getElementById('tasks-container');
     container.innerHTML = `
-        <div class="loading-state">
-            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        <div class="loading-state" style="text-align: center; padding: 40px; width: 100%;">
+            <span style="font-size: 32px; display: block; margin-bottom: 8px;">🔄</span>
             <p>Cargando pendientes...</p>
         </div>
     `;
@@ -224,7 +224,7 @@ function renderTasksGrid(tareas) {
     if (!tareas || tareas.length === 0) {
         container.innerHTML = `
             <div class="empty-state glass-card" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-                <i class="fa-solid fa-clipboard-check" style="font-size: 42px; color: var(--accent); margin-bottom: 12px;"></i>
+                <span style="font-size: 42px; color: var(--accent); margin-bottom: 12px; display: block;">📋</span>
                 <h3>¡Todo al día! No hay pendientes en esta vista</h3>
                 <p style="color: var(--text-muted); margin-top: 6px;">Haz clic en <b>"+ Nueva Tarea en Lote"</b> para registrar tus pendientes por unidades de salud o personales.</p>
             </div>
@@ -250,16 +250,16 @@ function renderTasksGrid(tareas) {
         }
 
         const esPersonal = t.tipo_destino === 'personal' || t.unidad === 'Personal / General';
-        const unidadIcon = esPersonal ? 'fa-user' : 'fa-hospital';
+        const unidadIcon = esPersonal ? '👤' : '🏥';
         const esRecurrente = t.frecuencia && t.frecuencia !== 'unica' && !t.completada;
 
         return `
             <div class="task-card status-${estado}">
                 <div class="task-card-header">
                     <div class="task-badges">
-                        <span class="badge badge-unit"><i class="fa-solid ${unidadIcon}"></i> ${t.unidad}</span>
+                        <span class="badge badge-unit"><span>${unidadIcon}</span> ${t.unidad}</span>
                         <span class="badge badge-category">${t.categoria}</span>
-                        <span class="badge badge-freq"><i class="fa-solid fa-repeat"></i> ${freqNombre}</span>
+                        <span class="badge badge-freq"><span>🔄</span> ${freqNombre}</span>
                     </div>
                     ${badgeEstadoHtml}
                 </div>
@@ -269,11 +269,11 @@ function renderTasksGrid(tareas) {
 
                 <div class="task-meta">
                     <div class="meta-row">
-                        <span><i class="fa-regular fa-bell"></i> Avisos inician:</span>
+                        <span><span>🔔</span> Avisos inician:</span>
                         <span class="highlight">${t.fecha_inicio} (${recPorDia}x al día)</span>
                     </div>
                     <div class="meta-row">
-                        <span><i class="fa-regular fa-calendar-check"></i> Fecha y Hora Límite:</span>
+                        <span><span>📅</span> Fecha y Hora Límite:</span>
                         <span class="highlight" style="color: ${estado === 'vencida' ? 'var(--status-red)' : 'var(--text-main)'}; font-weight: 700;">
                             ${t.fecha_entrega} ${horaStr}
                         </span>
@@ -283,26 +283,26 @@ function renderTasksGrid(tareas) {
                 <div class="task-card-actions">
                     ${!t.completada ? `
                         <button class="btn-complete" onclick="completarTarea('${t.id}')">
-                            <i class="fa-solid fa-check"></i> Marcar Realizada
+                            <span>✅</span> Marcar Realizada
                         </button>
                         <button class="btn-small-action" title="Postergar 3 Días" onclick="postergarTarea('${t.id}', 3)">
-                            <i class="fa-solid fa-clock-forward"></i> +3d
+                            +3d
                         </button>
                         <button class="btn-small-action" title="Editar Tarea" onclick="abrirModalEditar('${t.id}')">
-                            <i class="fa-solid fa-pen"></i>
+                            <span>✏️</span>
                         </button>
                     ` : `
                         <button class="btn-complete" style="background: rgba(255,255,255,0.1); cursor: default;" disabled>
-                            <i class="fa-solid fa-circle-check"></i> En Historial
+                            <span>✅</span> En Historial
                         </button>
                     `}
                     ${esRecurrente ? `
                         <button class="btn-small-action" title="Finalizar Serie Recurrente (No volver a repetir)" onclick="finalizarSerie('${t.id}')" style="color: var(--status-orange);">
-                            <i class="fa-solid fa-ban"></i>
+                            <span>🛑</span>
                         </button>
                     ` : ''}
                     <button class="btn-small-action" title="Eliminar Tarea Definitivamente" onclick="eliminarTarea('${t.id}')" style="color: var(--status-red);">
-                        <i class="fa-solid fa-trash"></i>
+                        <span>🗑️</span>
                     </button>
                 </div>
             </div>
@@ -331,8 +331,8 @@ function renderUnidadesUI() {
     const listAdmin = document.getElementById('list-unidades');
     listAdmin.innerHTML = appState.unidades.map(u => `
         <li>
-            <span><i class="fa-solid fa-hospital" style="color: var(--accent); margin-right: 8px;"></i> ${u}</span>
-            <button class="btn-del-item" title="Eliminar" onclick="eliminarUnidad('${u}')"><i class="fa-solid fa-trash"></i></button>
+            <span><span style="margin-right: 8px;">🏥</span> ${u}</span>
+            <button class="btn-del-item" title="Eliminar" onclick="eliminarUnidad('${u}')"><span>🗑️</span></button>
         </li>
     `).join('');
 }
@@ -348,8 +348,8 @@ function renderCategoriasUI() {
     const listAdmin = document.getElementById('list-categorias');
     listAdmin.innerHTML = appState.categorias.map(c => `
         <li>
-            <span><i class="fa-solid fa-tag" style="color: var(--status-purple); margin-right: 8px;"></i> ${c}</span>
-            <button class="btn-del-item" title="Eliminar" onclick="eliminarCategoria('${c}')"><i class="fa-solid fa-trash"></i></button>
+            <span><span style="margin-right: 8px;">🏷️</span> ${c}</span>
+            <button class="btn-del-item" title="Eliminar" onclick="eliminarCategoria('${c}')"><span>🗑️</span></button>
         </li>
     `).join('');
 }
