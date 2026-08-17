@@ -107,12 +107,7 @@ function iniciarAutoSincronizacion() {
 
 async function cargarTodoSilencioso() {
     try {
-        await Promise.all([
-            cargarUnidades(),
-            cargarCategorias(),
-            cargarFrecuencias(),
-            cargarTareasSilencioso()
-        ]);
+        await cargarTareasSilencioso();
     } catch (e) {}
 }
 
@@ -435,56 +430,80 @@ function renderUnidadesUI() {
     const selFiltro = document.getElementById('select-filtro-unidad');
     const selEdit = document.getElementById('edit-unidad');
 
+    const valFiltro = selFiltro ? selFiltro.value : 'Todas';
+    const valEdit = selEdit ? selEdit.value : '';
+
     const opciones = `<option value="Todas">Todas las Unidades</option>` +
         appState.unidades.map(u => `<option value="${u}">${u}</option>`).join('');
 
-    selFiltro.innerHTML = opciones;
-    selEdit.innerHTML = appState.unidades.map(u => `<option value="${u}">${u}</option>`).join('');
+    if (selFiltro) selFiltro.innerHTML = opciones;
+    if (selEdit) selEdit.innerHTML = appState.unidades.map(u => `<option value="${u}">${u}</option>`).join('');
+
+    if (selFiltro && valFiltro) selFiltro.value = valFiltro;
+    if (selEdit && valEdit) selEdit.value = valEdit;
 
     const cCheckboxes = document.getElementById('container-unidades-checkboxes');
-    cCheckboxes.innerHTML = appState.unidades.map((u, i) => `
-        <label class="unit-checkbox-item">
-            <input type="checkbox" name="unidad_chk" value="${u}" checked>
-            <span>${u}</span>
-        </label>
-    `).join('');
+    if (cCheckboxes) {
+        cCheckboxes.innerHTML = appState.unidades.map((u, i) => `
+            <label class="unit-checkbox-item">
+                <input type="checkbox" name="unidad_chk" value="${u}" checked>
+                <span>${u}</span>
+            </label>
+        `).join('');
+    }
 
     const listAdmin = document.getElementById('list-unidades');
-    listAdmin.innerHTML = appState.unidades.map(u => `
-        <li>
-            <span><span style="margin-right: 8px;">🏥</span> ${u}</span>
-            <div style="display: flex; gap: 8px;">
-                <button class="btn-del-item" title="Editar Nombre" onclick="editarUnidad('${u}')" style="color: var(--accent);"><span>✏️</span></button>
-                <button class="btn-del-item" title="Eliminar" onclick="eliminarUnidad('${u}')"><span>🗑️</span></button>
-            </div>
-        </li>
-    `).join('');
+    if (listAdmin) {
+        listAdmin.innerHTML = appState.unidades.map(u => `
+            <li>
+                <span><span style="margin-right: 8px;">🏥</span> ${u}</span>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn-del-item" title="Editar Nombre" onclick="editarUnidad('${u}')" style="color: var(--accent);"><span>✏️</span></button>
+                    <button class="btn-del-item" title="Eliminar" onclick="eliminarUnidad('${u}')"><span>🗑️</span></button>
+                </div>
+            </li>
+        `).join('');
+    }
 }
 
 function renderCategoriasUI() {
     const selNew = document.getElementById('t-categoria');
     const selEdit = document.getElementById('edit-categoria');
+
+    const valNew = selNew ? selNew.value : '';
+    const valEdit = selEdit ? selEdit.value : '';
+
     const options = appState.categorias.map(c => `<option value="${c}">${c}</option>`).join('');
 
-    selNew.innerHTML = options;
-    selEdit.innerHTML = options;
+    if (selNew) selNew.innerHTML = options;
+    if (selEdit) selEdit.innerHTML = options;
+
+    if (selNew && valNew) selNew.value = valNew;
+    if (selEdit && valEdit) selEdit.value = valEdit;
 
     const listAdmin = document.getElementById('list-categorias');
-    listAdmin.innerHTML = appState.categorias.map(c => `
-        <li>
-            <span><span style="margin-right: 8px;">🏷️</span> ${c}</span>
-            <div style="display: flex; gap: 8px;">
-                <button class="btn-del-item" title="Editar Nombre" onclick="editarCategoria('${c}')" style="color: var(--accent);"><span>✏️</span></button>
-                <button class="btn-del-item" title="Eliminar" onclick="eliminarCategoria('${c}')"><span>🗑️</span></button>
-            </div>
-        </li>
-    `).join('');
+    if (listAdmin) {
+        listAdmin.innerHTML = appState.categorias.map(c => `
+            <li>
+                <span><span style="margin-right: 8px;">🏷️</span> ${c}</span>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn-del-item" title="Editar Nombre" onclick="editarCategoria('${c}')" style="color: var(--accent);"><span>✏️</span></button>
+                    <button class="btn-del-item" title="Eliminar" onclick="eliminarCategoria('${c}')"><span>🗑️</span></button>
+                </div>
+            </li>
+        `).join('');
+    }
 }
+
 
 function renderFrecuenciasUI() {
     const selFiltro = document.getElementById('select-filtro-frecuencia');
     const selNew = document.getElementById('t-frecuencia');
     const selEdit = document.getElementById('edit-frecuencia');
+
+    const valFiltro = selFiltro ? selFiltro.value : 'Todas';
+    const valNew = selNew ? selNew.value : '';
+    const valEdit = selEdit ? selEdit.value : '';
 
     let optsFiltro = `<option value="Todas">Todas las Frecuencias</option>`;
     let optsSelect = ``;
@@ -494,11 +513,15 @@ function renderFrecuenciasUI() {
         optsSelect += `<option value="${key}">${appState.frecuencias[key]}</option>`;
     }
 
-    selFiltro.innerHTML = optsFiltro;
-    selNew.innerHTML = optsSelect;
-    selEdit.innerHTML = optsSelect;
-    selNew.value = 'mensual';
+    if (selFiltro) selFiltro.innerHTML = optsFiltro;
+    if (selNew) selNew.innerHTML = optsSelect;
+    if (selEdit) selEdit.innerHTML = optsSelect;
+
+    if (selFiltro && valFiltro) selFiltro.value = valFiltro;
+    if (selNew) selNew.value = valNew && appState.frecuencias[valNew] ? valNew : 'unica';
+    if (selEdit && valEdit) selEdit.value = valEdit;
 }
+
 
 async function renderDashboardMetrics() {
     try {
