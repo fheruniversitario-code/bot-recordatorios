@@ -494,7 +494,7 @@ class DatabaseManager:
                 if "dias_aviso" in nuevos_datos:
                     t["dias_aviso"] = int(nuevos_datos["dias_aviso"])
                 if "recordatorios_por_dia" in nuevos_datos:
-                    t["recordatorios_por_dia"] = int(nuevos_datos["recordatorios_por_dia"])
+                    t["recordatorios_por_dia"] = nuevos_datos["recordatorios_por_dia"]
                 
                 # Recalcular fecha de inicio
                 try:
@@ -506,6 +506,16 @@ class DatabaseManager:
                 self.guardar_datos(datos)
                 return True, "Tarea actualizada correctamente."
         return False, "Tarea no encontrada."
+
+    def registrar_notificacion_telegram_enviada(self, tarea_id, timestamp_str):
+        datos = self.cargar_datos()
+        for t in datos.get("tareas", []):
+            if t["id"] == tarea_id:
+                t["ultima_notificacion_telegram"] = timestamp_str
+                self.guardar_datos(datos)
+                return True
+        return False
+
 
     def eliminar_tarea(self, tarea_id):
         datos = self.cargar_datos()

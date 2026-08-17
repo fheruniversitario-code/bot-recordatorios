@@ -234,8 +234,49 @@ def enviar_formato_tareas(bot, chat_id, tareas, titulo_seccion):
         msg = ""
 
 
-# --- SCHEDULER DE RECORDATORIO DIARIO Y MULTI-SLOT ---
-def enviar_resumen_diario(bot, min_recordatorios_requeridos=1):
+# --- SCHEDULER DE RECORDATORIO DIARIO, POR HORA E INTERVALOS DINÁMICOS ---
+def obtener_ahora_mexico():
+    """Obtiene fecha y hora actual con la zona horaria de México (America/Mexico_City)."""
+    try:
+        from zoneinfo import ZoneInfo
+        return datetime.datetime.now(ZoneInfo("America/Mexico_City"))
+    except Exception:
+        tz_mex = datetime.timezone(datetime.timedelta(hours=-6))
+        return datetime.datetime.now(tz_mex)
+
+
+def enviar_notificacion_individual(bot, chat_id, tarea):
+    freq_lbl = FRECUENCIAS.get(tarea.get("frecuencia"), tarea.get("frecuencia"))
+    estado = tarea.get("estado_calculado", "pendiente")
+    icon_est = "🚨" if estado == "vencida" else "⚡"
+    
+    msg = (
+        f"{icon_est} *RECORDATORIO DE PENDIENTES*\n\n"
+        f"🏥 *{tarea['unidad']}*\n"
+        f"📝 *{tarea['tarea']}*\n"
+        f"🏷️ Categoría: `{tarea.get('categoria', 'General')}`\n"
+        f"🔁 Frecuencia: `{freq_lbl}`\n"
+        f"📅 Fecha Límite: *{tarea['fecha_entrega']}* ⏰ `{tarea.get('hora_entrega', '08:00')} hrs`"
+    )
+    if tarea.get("descripcion"):
+        msg += f"\nℹ️ _{tarea['descripcion']}_"
+
+    markup = InlineKeyboardMarkup()
+    markup.add(
+        InlineKeyboardButton("✅ Marcar Realizada", callback_data=f"done_{tarea['id']}"),
+        InlineKeyboardButton("📅 Postergar +3 días", callback_data=f"postpone_{tarea['id']}")
+    )
+    if tarea.get("frecuencia") != "unica" and not tarea.get("completada"):
+        markup.add(InlineKeyboardButton("🛑 Finalizar Serie", callback_data=f"stop_series_{tarea['id']}"))
+
+    try:
+        bot.send_message(chat_id, msg, parse_mode="Markdown", reply_markup=markup)
+        print(f"[+] Notificación enviada a Telegram: '{tarea['tarea']}' ({tarea['unidad']})")
+    except Exception as e:
+        print("Error enviando notificación telegram:", e)
+
+
+def procesar_recordatorios_telegram(bot):
     if not bot:
         return
 
@@ -244,61 +285,76 @@ def enviar_resumen_diario(bot, min_recordatorios_requeridos=1):
     if not chat_id:
         return
 
+    now_mex = obtener_ahora_mexico()
+    hora_actual_str = now_mex.strftime("%H:%M")
+
     tareas = db.obtener_tareas(filtro_estado="activas")
-    # Filtrar tareas activas en periodo de aviso
+    
+    # Filtrar tareas por vencer o vencidas con aviso por Telegram activo
     activas_aviso = [
         t for t in tareas 
         if t.get("estado_calculado") in ["vencida", "por_vencer"] 
-        and t.get("recordatorios_por_dia", 1) >= min_recordatorios_requeridos
+        and "Telegram" in t.get("recordatorios", ["Telegram", "Visual en App"])
     ]
 
-    if not activas_aviso:
-        return
-
-    slot_label = "08:00 AM" if min_recordatorios_requeridos == 1 else ("13:00 PM" if min_recordatorios_requeridos == 2 else "19:00 PM")
-    header = f"🚨 *AVISO DIARIO DE PENDIENTES ({slot_label})* 🚨\n({datetime.date.today().strftime('%d/%m/%Y')})\n\nTienes {len(activas_aviso)} tarea(s) pendientes:"
-    bot.send_message(chat_id, header)
-
     for t in activas_aviso:
-        freq_lbl = FRECUENCIAS.get(t.get("frecuencia"), t.get("frecuencia"))
-        msg = (
-            f"🏥 *{t['unidad']}*\n"
-            f"📝 *{t['tarea']}*\n"
-            f"🔁 Frecuencia: `{freq_lbl}`\n"
-            f"📅 Fecha Límite: *{t['fecha_entrega']}* ⏰ `{t.get('hora_entrega', '09:00')} hrs`"
-        )
-        
-        markup = InlineKeyboardMarkup()
-        markup.add(
-            InlineKeyboardButton("✅ Marcar Realizada", callback_data=f"done_{t['id']}"),
-            InlineKeyboardButton("📅 Postergar +3 días", callback_data=f"postpone_{t['id']}")
-        )
-        try:
-            bot.send_message(chat_id, msg, parse_mode="Markdown", reply_markup=markup)
-        except Exception as e:
-            print("Error enviando mensaje telegram:", e)
+        hora_tarea = t.get("hora_entrega", "08:00")
+        frec_param = str(t.get("recordatorios_por_dia", "1"))
+        last_sent_str = t.get("ultima_notificacion_telegram", "")
+
+        minutos_desde_ultimo = 999999
+        if last_sent_str:
+            try:
+                last_dt = datetime.datetime.strptime(last_sent_str, "%Y-%m-%d %H:%M:%S")
+                if last_dt.tzinfo is None:
+                    last_dt = last_dt.replace(tzinfo=now_mex.tzinfo)
+                minutos_desde_ultimo = (now_mex - last_dt).total_seconds() / 60.0
+            except Exception:
+                pass
+
+        debe_notificar = False
+
+        if frec_param.startswith("int_"):
+            # Intervalos dinámicos en horas (int_2, int_3, int_4, int_6, int_8, int_12)
+            try:
+                num_horas = int(frec_param.replace("int_", ""))
+            except ValueError:
+                num_horas = 4
+            intervalo_minutos = num_horas * 60
+            if minutos_desde_ultimo >= (intervalo_minutos - 2):
+                debe_notificar = True
+        elif frec_param == "3":
+            # 3 veces al día: hora_tarea, 13:00, 19:00
+            slots = [hora_tarea, "13:00", "19:00"]
+            if hora_actual_str in slots and minutos_desde_ultimo >= 45:
+                debe_notificar = True
+        elif frec_param == "2":
+            # 2 veces al día: hora_tarea, 14:00
+            slots = [hora_tarea, "14:00"]
+            if hora_actual_str in slots and minutos_desde_ultimo >= 45:
+                debe_notificar = True
+        else:
+            # 1 vez al día: a la hora personalizada fijada en la tarea o a la global
+            hora_global = config.get("hora_notificacion_diaria", "08:00")
+            slots = [hora_tarea, hora_global]
+            if hora_actual_str in slots and minutos_desde_ultimo >= 1100: # ~18 horas
+                debe_notificar = True
+
+        if debe_notificar:
+            enviar_notificacion_individual(bot, chat_id, t)
+            db.registrar_notificacion_telegram_enviada(t["id"], now_mex.strftime("%Y-%m-%d %H:%M:%S"))
 
 
 def loop_programador(bot):
-    print("[*] Programador diario de Telegram iniciado con soporte de múltiples recordatorios al día...")
-    config = db.obtener_configuracion()
-    hora_defecto = config.get("hora_notificacion_diaria", "08:00")
-
-    # Slot 1 (Mañana / Principal)
-    schedule.every().day.at(hora_defecto).do(enviar_resumen_diario, bot=bot, min_recordatorios_requeridos=1)
-    
-    # Slot 2 (Mediodía / Tarde - para tareas con >= 2 recordatorios por dia)
-    schedule.every().day.at("13:00").do(enviar_resumen_diario, bot=bot, min_recordatorios_requeridos=2)
-    
-    # Slot 3 (Noche - para tareas con 3 recordatorios por dia)
-    schedule.every().day.at("19:00").do(enviar_resumen_diario, bot=bot, min_recordatorios_requeridos=3)
+    print("[*] Programador de Telegram iniciado (Zona Horaria México: America/Mexico_City)...")
+    print("[*] Monitoreando horas fijadas e intervalos personalizados por tarea...")
 
     while True:
         try:
-            schedule.run_pending()
+            procesar_recordatorios_telegram(bot)
         except Exception as e:
-            print("Error en loop scheduler:", e)
-        time.sleep(15)
+            print("Error en loop programador telegram:", e)
+        time.sleep(30)
 
 
 def iniciar_servicio_bot():

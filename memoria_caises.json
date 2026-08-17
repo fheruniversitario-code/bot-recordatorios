@@ -9,11 +9,6 @@
     ],
     "categorias": [
         "Informes y Reportes",
-        "Inventarios y Medicamentos",
-        "Supervisión y Auditoría",
-        "Cadena de Frío",
-        "Vacunación",
-        "Mantenimiento",
         "Personal / General"
     ],
     "configuracion": {
@@ -24,35 +19,135 @@
     },
     "tareas": [
         {
-            "id": "962190a4",
-            "tarea": "Reporte Trimestral de Epidemiología",
-            "descripcion": "Verificar vacunas e inventario",
+            "id": "597a7ed5",
+            "tarea": "MECIC CAPTURA",
+            "descripcion": "",
             "tipo_destino": "unidad",
-            "unidad": "CAISES Guanajuato",
+            "unidad": "CAISES JARAL DEL PROGRESO",
             "categoria": "Informes y Reportes",
-            "frecuencia": "trimestral",
-            "fecha_inicio": "2026-11-23",
-            "fecha_entrega": "2026-11-30",
+            "frecuencia": "mensual",
+            "fecha_inicio": "2026-08-25",
+            "fecha_entrega": "2026-08-30",
             "hora_entrega": "09:00",
-            "dias_aviso": 7,
+            "dias_aviso": 5,
             "recordatorios_por_dia": 1,
             "recordatorios": [
                 "Telegram",
                 "Visual en App"
             ],
             "completada": false,
-            "creada_el": "2026-08-14 09:17:00"
+            "creada_el": "2026-08-17 04:56:00"
         },
         {
-            "id": "b4049a00",
-            "tarea": "Reporte Trimestral de Epidemiología",
-            "descripcion": "Verificar vacunas e inventario",
+            "id": "832964cf",
+            "tarea": "MECIC CAPTURA",
+            "descripcion": "",
             "tipo_destino": "unidad",
-            "unidad": "UMAPS Puentecillas",
+            "unidad": "UMAPS CERRITO DE CAMARGO",
             "categoria": "Informes y Reportes",
-            "frecuencia": "trimestral",
-            "fecha_inicio": "2026-11-23",
-            "fecha_entrega": "2026-11-30",
+            "frecuencia": "mensual",
+            "fecha_inicio": "2026-08-25",
+            "fecha_entrega": "2026-08-30",
+            "hora_entrega": "09:00",
+            "dias_aviso": 5,
+            "recordatorios_por_dia": 1,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-17 04:56:00"
+        },
+        {
+            "id": "105e5475",
+            "tarea": "MECIC CAPTURA",
+            "descripcion": "",
+            "tipo_destino": "unidad",
+            "unidad": "UMAPS VICTORIA DE CORTAZAR",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "mensual",
+            "fecha_inicio": "2026-08-25",
+            "fecha_entrega": "2026-08-30",
+            "hora_entrega": "09:00",
+            "dias_aviso": 5,
+            "recordatorios_por_dia": 1,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-17 04:56:00"
+        },
+        {
+            "id": "e5e9a4e1",
+            "tarea": "MECIC CAPTURA",
+            "descripcion": "",
+            "tipo_destino": "unidad",
+            "unidad": "UMAPS SANTIAGO CAPITIRO",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "mensual",
+            "fecha_inicio": "2026-08-25",
+            "fecha_entrega": "2026-08-30",
+            "hora_entrega": "09:00",
+            "dias_aviso": 5,
+            "recordatorios_por_dia": 1,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-17 04:56:00"
+        },
+        {
+            "id": "b5bf1829",
+            "tarea": "MECIC CAPTURA",
+            "descripcion": "",
+            "tipo_destino": "unidad",
+            "unidad": "UMAPS ZEMPOALA",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "mensual",
+            "fecha_inicio": "2026-08-25",
+            "fecha_entrega": "2026-08-30",
+            "hora_entrega": "09:00",
+            "dias_aviso": 5,
+            "recordatorios_por_dia": 1,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-17 04:56:00"
+        },
+        {
+            "id": "6420e373",
+            "tarea": "MECIC CAPTURA",
+            "descripcion": "",
+            "tipo_destino": "unidad",
+            "unidad": "UMAPS PROVIDENCIA",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "mensual",
+            "fecha_inicio": "2026-08-25",
+            "fecha_entrega": "2026-08-30",
+            "hora_entrega": "09:00",
+            "dias_aviso": 5,
+            "recordatorios_por_dia": 1,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-17 04:56:00"
+        },
+        {
+            "id": "ac4dcd81",
+            "tarea": "SINASEP",
+            "descripcion": "",
+            "tipo_destino": "unidad",
+            "unidad": "CAISES JARAL DEL PROGRESO",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "mensual",
+            "fecha_inicio": "2026-08-23",
+            "fecha_entrega": "2026-08-30",
             "hora_entrega": "09:00",
             "dias_aviso": 7,
             "recordatorios_por_dia": 1,
@@ -61,7 +156,127 @@
                 "Visual en App"
             ],
             "completada": false,
-            "creada_el": "2026-08-14 09:17:00"
+            "creada_el": "2026-08-17 04:56:34"
+        },
+        {
+            "id": "75936c1e",
+            "tarea": "SINASEP",
+            "descripcion": "",
+            "tipo_destino": "unidad",
+            "unidad": "UMAPS CERRITO DE CAMARGO",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "mensual",
+            "fecha_inicio": "2026-08-23",
+            "fecha_entrega": "2026-08-30",
+            "hora_entrega": "09:00",
+            "dias_aviso": 7,
+            "recordatorios_por_dia": 1,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-17 04:56:34"
+        },
+        {
+            "id": "658013f6",
+            "tarea": "SINASEP",
+            "descripcion": "",
+            "tipo_destino": "unidad",
+            "unidad": "UMAPS VICTORIA DE CORTAZAR",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "mensual",
+            "fecha_inicio": "2026-08-23",
+            "fecha_entrega": "2026-08-30",
+            "hora_entrega": "09:00",
+            "dias_aviso": 7,
+            "recordatorios_por_dia": 1,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-17 04:56:34"
+        },
+        {
+            "id": "12ab6995",
+            "tarea": "SINASEP",
+            "descripcion": "",
+            "tipo_destino": "unidad",
+            "unidad": "UMAPS SANTIAGO CAPITIRO",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "mensual",
+            "fecha_inicio": "2026-08-23",
+            "fecha_entrega": "2026-08-30",
+            "hora_entrega": "09:00",
+            "dias_aviso": 7,
+            "recordatorios_por_dia": 1,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-17 04:56:34"
+        },
+        {
+            "id": "4e57d76f",
+            "tarea": "SINASEP",
+            "descripcion": "",
+            "tipo_destino": "unidad",
+            "unidad": "UMAPS ZEMPOALA",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "mensual",
+            "fecha_inicio": "2026-08-23",
+            "fecha_entrega": "2026-08-30",
+            "hora_entrega": "09:00",
+            "dias_aviso": 7,
+            "recordatorios_por_dia": 1,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-17 04:56:34"
+        },
+        {
+            "id": "390fbb4d",
+            "tarea": "SINASEP",
+            "descripcion": "",
+            "tipo_destino": "unidad",
+            "unidad": "UMAPS PROVIDENCIA",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "mensual",
+            "fecha_inicio": "2026-08-23",
+            "fecha_entrega": "2026-08-30",
+            "hora_entrega": "09:00",
+            "dias_aviso": 7,
+            "recordatorios_por_dia": 1,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-17 04:56:34"
+        },
+        {
+            "id": "034ed4f0",
+            "tarea": "IR POR BORDADOS Y PAQUETE",
+            "descripcion": "",
+            "tipo_destino": "personal",
+            "unidad": "Personal / General",
+            "categoria": "Informes y Reportes",
+            "frecuencia": "mensual",
+            "fecha_inicio": "2026-08-16",
+            "fecha_entrega": "2026-08-17",
+            "hora_entrega": "13:00",
+            "dias_aviso": 1,
+            "recordatorios_por_dia": 2,
+            "recordatorios": [
+                "Telegram",
+                "Visual en App"
+            ],
+            "completada": false,
+            "creada_el": "2026-08-17 04:58:01"
         }
     ],
     "historial": []
